@@ -1,29 +1,28 @@
 import React from 'react';
-import axios from 'axios';
 import './movielist.css'
+import PropTypes from "prop-types";
 
 export default class movielist extends React.Component {
-  constructor(props) {
-    super(props);
 
-    this.state = {
-      moviels: []
-    };
+  static contextTypes = {
+    router: PropTypes.shape({
+      history: PropTypes.shape({
+        push: PropTypes.func.isRequired,
+        replace: PropTypes.func.isRequired
+      }).isRequired,
+      staticContext: PropTypes.object
+    }).isRequired
+  };
+  getmoviedetailer(id){
+    this.props.setid(id);
+    this.context.router.history.push('/moviedetail');
   }
-
-  componentDidMount() {
-    axios.get(`https://api.themoviedb.org/3/search/movie?api_key=14d069109bafe2681aa95ad4b60d2a91&language=en-US&query="hello"`)
-      .then(res => {
-        this.setState({ moviels: res.data.results });
-      });
-  }
-
   render() {
     return (
       <div className="movielistcontainer">
-          {this.state.moviels.map(post =>
-            <div className="image">
-              <img className="movieposterimage" src={'https://image.tmdb.org/t/p/w300/' + post.poster_path} alt="" />     
+          {this.props.movielsprop.map(post =>
+            <div className="image" key={post.id}>
+              <img className="movieposterimage" src={'https://image.tmdb.org/t/p/w300/' + post.poster_path} alt={post.title} onClick={() => {this.getmoviedetailer(post.id)}} />     
               <h2 className="movielstitle">{post.title}</h2>
             </div>
           )}
