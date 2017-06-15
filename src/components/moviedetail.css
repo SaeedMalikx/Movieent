@@ -1,24 +1,3 @@
-.backdropimage{
-    display: block;
-}
-
-
-
-.detailboxsummary{
-    margin: auto;
-}
-
-.detailboxtitle{
-    font-size: 2em;
-}
-
-.detailcontainer{
-    width: 60%;
-    margin: auto;
-    text-align: center;
-    color: black;
-}
-
-.detailboxinfo{
-    font-size: 2.5em;
+.detailimage{
+    height: 40%;
 }
