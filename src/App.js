@@ -38,7 +38,7 @@ class App extends Component {
   getmoviedetail(id){
     axios.get("https://api.themoviedb.org/3/movie/" + id + "?api_key=14d069109bafe2681aa95ad4b60d2a91&language=en-US")
     .then(res => {
-      this.setState({ moviedetail: res.data.results });
+      this.setState({ moviedetail: res.data });
     });  
   }
 
@@ -56,11 +56,11 @@ class App extends Component {
         <div className="App">
         <div className="navbar">
             <Link to="/">Home</Link>
-            <a onClick={this.getpopularmovies.bind(this)}>Popular Movies</a>
-            <a onClick={this.gettopratedmovies.bind(this)}>{this.state.movieid}</a>
+            <a onClick={this.getpopularmovies.bind(this)}>Popular</a>
+            <a onClick={this.gettopratedmovies.bind(this)}>Top Rated</a>
             <input className="navbarsearch" onChange={this.searchvalue.bind(this)}/>
         </div>
-            <Route exact path={"/moviedetail"} component={() => <Moviedetail moviedetailprop={this.state.moviedetail}/>}/>
+            <Route path={"/moviedetail"} component={() => <Moviedetail moviedetailprop={this.state.moviedetail}/>}/>
             <Route exact path={"/"} component={() => <Movielist movielsprop={this.state.moviels} setid={this.getmoviedetail.bind(this)}/>}/>
         </div>
       </Router>
