@@ -26,7 +26,9 @@ class App extends Component {
       moviedetail: [],
       open: false,
       popopen: false,
-      genres: []
+      genres: [],
+      page: 1,
+      moviefilter: ""
     };
   }
 
@@ -56,23 +58,59 @@ class App extends Component {
     });
   }
 
+  movielsfiltertop = () => {
+    this.setState({moviels: []})
+    this.setState({moviefilter: "toprated"})
+    this.setState({page: 1})
+    this.gettopratedmovies()
+  }
+  movielsfilterup = () => {
+    this.setState({moviels: []})
+    this.setState({moviefilter: "upcoming"})
+    this.setState({page: 1})
+    this.getupcomingmovies()
+  }
+  movielsfilterpop = () => {
+    this.setState({moviels: []})
+    this.setState({moviefilter: "popular"})
+    this.setState({page: 1})
+    this.getpopularmovies()
+  }
   gettopratedmovies = () =>{
-     axios.get('https://api.themoviedb.org/3/movie/top_rated?api_key=14d069109bafe2681aa95ad4b60d2a91&language=en-US&page=1')
+    if (this.state.page === 1){
+     axios.get('https://api.themoviedb.org/3/movie/top_rated?api_key=14d069109bafe2681aa95ad4b60d2a91&language=en-US&page=' + this.state.page)
       .then(res => {
         this.setState({ moviels: res.data.results });
-      });      
+      })} else {
+      axios.get('https://api.themoviedb.org/3/movie/top_rated?api_key=14d069109bafe2681aa95ad4b60d2a91&language=en-US&page=' + this.state.page)
+      .then(res => {
+        this.setState({ moviels: this.state.moviels.concat(res.data.results) });
+      })  
+      }      
   }
   getupcomingmovies = () =>{
-     axios.get('https://api.themoviedb.org/3/movie/now_playing?api_key=14d069109bafe2681aa95ad4b60d2a91&language=en-US&page=1')
+    if (this.state.page === 1){
+     axios.get('https://api.themoviedb.org/3/movie/now_playing?api_key=14d069109bafe2681aa95ad4b60d2a91&language=en-US&page=' + this.state.page)
       .then(res => {
         this.setState({ moviels: res.data.results });
-      });      
+      })} else {
+      axios.get('https://api.themoviedb.org/3/movie/now_playing?api_key=14d069109bafe2681aa95ad4b60d2a91&language=en-US&page=' + this.state.page)
+      .then(res => {
+        this.setState({ moviels: this.state.moviels.concat(res.data.results) });
+      })  
+      }      
   }
   getpopularmovies = () => {
-    axios.get('https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=14d069109bafe2681aa95ad4b60d2a91&language=en-US&page=1')
+    if (this.state.page === 1){
+     axios.get('https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=14d069109bafe2681aa95ad4b60d2a91&language=en-US&page=' + this.state.page)
       .then(res => {
         this.setState({ moviels: res.data.results });
-      });    
+      })} else {
+      axios.get('https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=14d069109bafe2681aa95ad4b60d2a91&language=en-US&page=' + this.state.page)
+      .then(res => {
+        this.setState({ moviels: this.state.moviels.concat(res.data.results) });
+      })  
+      }    
   }
   getsearch = () => {
     axios.get(`https://api.themoviedb.org/3/search/movie?api_key=14d069109bafe2681aa95ad4b60d2a91&language=en-US&query="` + this.state.search)
@@ -95,6 +133,23 @@ class App extends Component {
     this.getsearch()
   }
 
+  setpagenumber = () => {
+    this.setState({page: this.state.page + 1})
+    switch (this.state.moviefilter) {
+        case "popular":
+          this.getpopularmovies()
+          break
+        case "toprated":
+          this.gettopratedmovies()
+          break
+        case "upcoming":
+          this.getupcomingmovies()
+          break
+        default:
+          console.log("must have category selected")
+    }
+  }
+
   
   render() {
     const actions = [
@@ -114,7 +169,7 @@ class App extends Component {
       <Router>
         <div className="App">
           <div className="navbar">
-              <Link to="/"><RaisedButton label="Home" primary={true} /></Link>
+              <Link to="/"><RaisedButton label="home" primary={true} /></Link>
               <div>
                 <RaisedButton
                   onTouchTap={this.handleTouchTap}
@@ -128,9 +183,9 @@ class App extends Component {
                   onRequestClose={this.handleRequestClose}
                 >
                   <Menu>
-                    <MenuItem onClick={this.getpopularmovies} primaryText="Popular" />
-                    <MenuItem onClick={this.gettopratedmovies} primaryText="Top Rated" />
-                    <MenuItem onClick={this.getupcomingmovies} primaryText="In Theatre" />
+                    <MenuItem onClick={this.movielsfilterpop} primaryText="Popular" />
+                    <MenuItem onClick={this.movielsfiltertop} primaryText="Top Rated" />
+                    <MenuItem onClick={this.movielsfilterup} primaryText="In Theatre" />
                   </Menu>
                 </Popover>
               </div>
@@ -168,7 +223,7 @@ class App extends Component {
               </div>
                <Moviedetail moviedetailprop={this.state.moviedetail}/>
               </Dialog>
-            <Route exact path={"/"} component={() => <Movielist movielsprop={this.state.moviels} setid={this.getmoviedetail}/>}/>
+            <Route exact path={"/"} component={() => <Movielist movielsprop={this.state.moviels} setid={this.getmoviedetail} setpage={this.setpagenumber}/>}/>
         </div>
       </Router>
     );
