@@ -4,19 +4,20 @@
 .navbar {
   display: flex;
   align-items: center;
-  overflow: hidden;
-  background-color: #333;
+  background-color: #E0E0E0;
   top: 0;
   width: 100%;
+  flex-wrap: wrap;
 }
 
 .navbar a {
-  color: #f2f2f2;
   text-align: center;
   padding: 14px 16px;
   text-decoration: none;
   font-size: 17px;
 }
+
+
 
 .navbarsearch{
   flex-grow: 1;
@@ -24,3 +25,21 @@
   margin: 8px 8px;
 }
 
+
+.dialoginfo{
+  color: red;
+}
+
+
+.chipcontainer{
+  display: flex;
+  align-content: flex-start;
+  flex-wrap: wrap;
+}
+
+
+.chip{
+  background-color: #e5e5e5;
+  height: 22px;
+  margin: 2px;
+}

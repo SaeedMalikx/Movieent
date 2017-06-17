@@ -4,7 +4,8 @@ import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import './index.css';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-
+var injectTapEventPlugin = require("react-tap-event-plugin");
+injectTapEventPlugin();
 
 const Root= () => (
   <MuiThemeProvider>
