@@ -28,7 +28,8 @@ class App extends Component {
       popopen: false,
       genres: [],
       page: 1,
-      moviefilter: ""
+      moviefilter: "",
+      apikey: "14d069109bafe2681aa95ad4b60d2a91"
     };
   }
 
@@ -59,30 +60,24 @@ class App extends Component {
   }
 
   movielsfiltertop = () => {
-    this.setState({moviels: []})
-    this.setState({moviefilter: "toprated"})
-    this.setState({page: 1})
+    this.setState({moviels: [], moviefilter: "toprated", page: 1})
     this.gettopratedmovies()
   }
   movielsfilterup = () => {
-    this.setState({moviels: []})
-    this.setState({moviefilter: "upcoming"})
-    this.setState({page: 1})
+    this.setState({moviels: [], moviefilter: "upcoming", page: 1})
     this.getupcomingmovies()
   }
   movielsfilterpop = () => {
-    this.setState({moviels: []})
-    this.setState({moviefilter: "popular"})
-    this.setState({page: 1})
+    this.setState({moviels: [], moviefilter: "popular", page: 1})
     this.getpopularmovies()
   }
   gettopratedmovies = () =>{
     if (this.state.page === 1){
-     axios.get('https://api.themoviedb.org/3/movie/top_rated?api_key=14d069109bafe2681aa95ad4b60d2a91&language=en-US&page=' + this.state.page)
+     axios.get('https://api.themoviedb.org/3/movie/top_rated?api_key=' + this.state.apikey + '&language=en-US&page=' + this.state.page)
       .then(res => {
         this.setState({ moviels: res.data.results });
       })} else {
-      axios.get('https://api.themoviedb.org/3/movie/top_rated?api_key=14d069109bafe2681aa95ad4b60d2a91&language=en-US&page=' + this.state.page)
+      axios.get('https://api.themoviedb.org/3/movie/top_rated?api_key=' + this.state.apikey + '&language=en-US&page=' + this.state.page)
       .then(res => {
         this.setState({ moviels: this.state.moviels.concat(res.data.results) });
       })  
@@ -90,11 +85,11 @@ class App extends Component {
   }
   getupcomingmovies = () =>{
     if (this.state.page === 1){
-     axios.get('https://api.themoviedb.org/3/movie/now_playing?api_key=14d069109bafe2681aa95ad4b60d2a91&language=en-US&page=' + this.state.page)
+     axios.get('https://api.themoviedb.org/3/movie/now_playing?api_key=' + this.state.apikey + '&language=en-US&page=' + this.state.page)
       .then(res => {
         this.setState({ moviels: res.data.results });
       })} else {
-      axios.get('https://api.themoviedb.org/3/movie/now_playing?api_key=14d069109bafe2681aa95ad4b60d2a91&language=en-US&page=' + this.state.page)
+      axios.get('https://api.themoviedb.org/3/movie/now_playing?api_key=' + this.state.apikey + '&language=en-US&page=' + this.state.page)
       .then(res => {
         this.setState({ moviels: this.state.moviels.concat(res.data.results) });
       })  
@@ -102,24 +97,24 @@ class App extends Component {
   }
   getpopularmovies = () => {
     if (this.state.page === 1){
-     axios.get('https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=14d069109bafe2681aa95ad4b60d2a91&language=en-US&page=' + this.state.page)
+     axios.get('https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=' + this.state.apikey + '&language=en-US&page=' + this.state.page)
       .then(res => {
         this.setState({ moviels: res.data.results });
       })} else {
-      axios.get('https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=14d069109bafe2681aa95ad4b60d2a91&language=en-US&page=' + this.state.page)
+      axios.get('https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=' + this.state.apikey + '&language=en-US&page=' + this.state.page)
       .then(res => {
         this.setState({ moviels: this.state.moviels.concat(res.data.results) });
       })  
       }    
   }
   getsearch = () => {
-    axios.get(`https://api.themoviedb.org/3/search/movie?api_key=14d069109bafe2681aa95ad4b60d2a91&language=en-US&query="` + this.state.search)
+    axios.get(`https://api.themoviedb.org/3/search/movie?api_key=' + this.state.apikey + '&language=en-US&query="` + this.state.search)
       .then(res => {
         this.setState({ moviels: res.data.results });
       });
   }
   getmoviedetail = (id) => {
-    axios.get("https://api.themoviedb.org/3/movie/" + id + "?api_key=14d069109bafe2681aa95ad4b60d2a91&language=en-US")
+    axios.get("https://api.themoviedb.org/3/movie/" + id + "?api_key=" + this.state.apikey + "&language=en-US")
     .then(res => {
       this.setState({ moviedetail: res.data, genres: res.data.genres });
     });
@@ -159,7 +154,7 @@ class App extends Component {
         onTouchTap={this.handleClose}
       />,
       <RaisedButton
-        label="Submit"
+        label="Close"
         primary={true}
         keyboardFocused={true}
         onTouchTap={this.handleClose}
@@ -212,18 +207,23 @@ class App extends Component {
                 open={this.state.popopen}
                 onRequestClose={this.handleClose}
               >
-              <div className="chipcontainer">
-                {this.state.genres.map(chip => 
-                    <div key={chip.id}>
-                        <div className="chip">
-                            <span >{chip.name}</span>
-                        </div>
-                    </div>
-                )}
-              </div>
+                <div className="chipcontainer">
+                  {this.state.genres.map(chip => 
+                      <div key={chip.id}>
+                          <div className="chip">
+                              <span >{chip.name}</span>
+                          </div>
+                      </div>
+                  )}
+                </div>
                <Moviedetail moviedetailprop={this.state.moviedetail}/>
               </Dialog>
-            <Route exact path={"/"} component={() => <Movielist movielsprop={this.state.moviels} setid={this.getmoviedetail} setpage={this.setpagenumber}/>}/>
+
+            <Route exact path={"/"} component={() => <Movielist 
+                                                      movielsprop={this.state.moviels} 
+                                                      setid={this.getmoviedetail} 
+                                                      setpage={this.setpagenumber}
+                                                      />}/>
         </div>
       </Router>
     );
