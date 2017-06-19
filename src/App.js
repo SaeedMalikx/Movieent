@@ -78,50 +78,28 @@ class App extends Component {
   }
 
   movielsfiltertop = () => {
-    this.setState({moviels: [], moviefilter: "toprated", page: 1}, () => {this.gettopratedmovies()});
+    this.setState({moviels: [], moviefilter: "toprated", page: 1, movieurl: "movie/top_rated?"}, () => {this.getmovie()});
   }
   movielsfilterup = () => {
-    this.setState({moviels: [], moviefilter: "upcoming", page: 1}, () => {this.getupcomingmovies()});
+    this.setState({moviels: [], moviefilter: "upcoming", page: 1, movieurl: "movie/now_playing?"}, () => {this.getmovie()});
   }
   movielsfilterpop = () => {
-    this.setState({moviels: [], moviefilter: "popular", page: 1}, () => {this.getpopularmovies()});
+    this.setState({moviels: [], moviefilter: "popular", page: 1, movieurl: "discover/movie?sort_by=popularity.desc&"}, () => {this.getmovie()});
   }
-  gettopratedmovies = () =>{
+
+  getmovie = () => {
     if (this.state.page === 1){
-     axios.get('https://api.themoviedb.org/3/movie/top_rated?api_key=' + this.state.apikey + '&language=en-US&page=' + this.state.page)
+     axios.get('https://api.themoviedb.org/3/' + this.state.movieurl + 'api_key=' + this.state.apikey + '&language=en-US&page=' + this.state.page)
       .then(res => {
         this.setState({ moviels: res.data.results });
       })} else {
-      axios.get('https://api.themoviedb.org/3/movie/top_rated?api_key=' + this.state.apikey + '&language=en-US&page=' + this.state.page)
+      axios.get('https://api.themoviedb.org/3/' + this.state.movieurl + 'api_key=' + this.state.apikey + '&language=en-US&page=' + this.state.page)
       .then(res => {
         this.setState({ moviels: this.state.moviels.concat(res.data.results) });
       })  
-      }      
+      }   
   }
-  getupcomingmovies = () =>{
-    if (this.state.page === 1){
-     axios.get('https://api.themoviedb.org/3/movie/now_playing?api_key=' + this.state.apikey + '&language=en-US&page=' + this.state.page)
-      .then(res => {
-        this.setState({ moviels: res.data.results });
-      })} else {
-      axios.get('https://api.themoviedb.org/3/movie/now_playing?api_key=' + this.state.apikey + '&language=en-US&page=' + this.state.page)
-      .then(res => {
-        this.setState({ moviels: this.state.moviels.concat(res.data.results) });
-      })  
-      }      
-  }
-  getpopularmovies = () => {
-    if (this.state.page === 1){
-     axios.get('https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=' + this.state.apikey + '&language=en-US&page=' + this.state.page)
-      .then(res => {
-        this.setState({ moviels: res.data.results });
-      })} else {
-      axios.get('https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=' + this.state.apikey + '&language=en-US&page=' + this.state.page)
-      .then(res => {
-        this.setState({ moviels: this.state.moviels.concat(res.data.results) });
-      })  
-      }    
-  }
+  
   getsearch = () => {
     axios.get(`https://api.themoviedb.org/3/search/movie?api_key=14d069109bafe2681aa95ad4b60d2a91&language=en-US&query="` + this.state.search)
       .then(res => {
@@ -144,19 +122,7 @@ class App extends Component {
 
   setpagenumber = () => {
     this.setState({page: this.state.page + 1}, () =>{
-    switch (this.state.moviefilter) {
-        case "popular":
-          this.getpopularmovies()
-          break
-        case "toprated":
-          this.gettopratedmovies()
-          break
-        case "upcoming":
-          this.getupcomingmovies()
-          break
-        default:
-          console.log("must have category selected")
-    }})
+    this.getmovie()})
   }
 
   
