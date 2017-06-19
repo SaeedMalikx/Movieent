@@ -13,11 +13,11 @@ export default class firebaselogin extends React.Component {
      this.state = {
        email: "",
        password: "",
-       uinfo: []
+       uinfo: ""
      };
    }
   closelogin = () => {
-      this.props.closeloginform()
+      this.props.closeloginform();
   }
   setuser = (user) => {
       this.setState({email: user.target.value})
@@ -38,9 +38,8 @@ export default class firebaselogin extends React.Component {
         }
         console.log(error);})
       .then(user =>{
-      this.setState({uinfo: user})
+      this.setState({uinfo: user.uid}, this.closelogin())
     });
-    this.closelogin()
   }
 
   signinuser = () => {
@@ -56,9 +55,8 @@ export default class firebaselogin extends React.Component {
             console.log(error);
             })
       .then(user =>{
-      this.setState({uinfo: user})
+      this.setState({uinfo: user}, this.closelogin())
     });
-    this.closelogin()
   }
   
 

@@ -6,6 +6,7 @@ import './App.css';
 import Movielist from './components/movielist';
 import Moviedetail from './components/moviedetail';
 import Firebaselogin from './components/firebaselogin'
+import Favorites from './components/favorites'
 import Main from './components/main';
 import MenuItem from 'material-ui/MenuItem';
 import Menu from 'material-ui/Menu';
@@ -29,22 +30,34 @@ class App extends Component {
       open: false,
       popopen: false,
       loginopen: false,
+      favopen: false,
       genres: [],
       page: 1,
       moviefilter: "",
       apikey: "14d069109bafe2681aa95ad4b60d2a91",
-      email: "saeedmalik360@gmail.com",
-      password: "helloworld",
-      uinfo: []
     };
   }
 
   openlogin = () => {
     this.setState({loginopen: true})
   }
+  openfav = () => {
+    this.setState({favopen: true})
+  }
 
   signout = () => {
     firebase.auth().signOut()
+  }
+
+  watchlater = () => {
+      
+    const user = firebase.auth().currentUser;
+    const value =  this.state.moviedetail.id
+    if (user != null) {
+    firebase.database().ref('/users/'+ user.uid + '/' + this.state.moviedetail.title).set({value
+    });
+    }
+
   }
 
   handleTouchTap = (event) => {
@@ -59,7 +72,8 @@ class App extends Component {
   handleRequestClose = () => {
     this.setState({
       open: false,
-      loginopen: false
+      loginopen: false,
+      favopen: false
     })
   }
 
@@ -99,7 +113,7 @@ class App extends Component {
       })  
       }   
   }
-  
+
   getsearch = () => {
     axios.get(`https://api.themoviedb.org/3/search/movie?api_key=14d069109bafe2681aa95ad4b60d2a91&language=en-US&query="` + this.state.search)
       .then(res => {
@@ -131,7 +145,7 @@ class App extends Component {
       <RaisedButton
         label="Watch Later"
         primary={true}
-        onTouchTap={this.handleClose}
+        onTouchTap={this.watchlater}
       />,
       <RaisedButton
         label="Close"
@@ -165,22 +179,12 @@ class App extends Component {
                 </Popover>
               </div>
               
-                <input className="navbarsearch" onChange={this.searchvalue} placeholder={this.state.uinfo.uid}/>
-                <RaisedButton label="home" primary={true} onClick={this.openlogin} />
-              
-              <div>
-                <IconMenu
-                  iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
-                  anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
-                  targetOrigin={{horizontal: 'right', vertical: 'bottom'}}
-                  
-                >
-                  <MenuItem primaryText="Watch List" />
-                  <MenuItem primaryText="Settings" />
-                  <MenuItem onClick={this.signout} primaryText="Logout" />
-                </IconMenu>
-              </div>
+                <input className="navbarsearch" onChange={this.searchvalue} placeholder="Search Movies"/>
+                <RaisedButton label="Favorites" secondary={true} onClick={this.openfav} />
+                <RaisedButton label="Login" secondary={true} onClick={this.openlogin} />
+                <RaisedButton label="Signout" secondary={true} onClick={this.signout} />
           </div>
+
             <Dialog
                 title={this.state.moviedetail.title}
                 actions={actions}
@@ -199,12 +203,21 @@ class App extends Component {
                 </div>
                <Moviedetail moviedetailprop={this.state.moviedetail}/>
               </Dialog>
+ 
             <Dialog
                 modal={false}
                 open={this.state.loginopen}
                 onRequestClose={this.handleRequestClose}
               >
                 <Firebaselogin closeloginform={this.handleRequestClose}/>
+              </Dialog>
+
+            <Dialog
+                modal={false}
+                open={this.state.favopen}
+                onRequestClose={this.handleRequestClose}
+              >
+                <Favorites/>
               </Dialog>
 
             <Route exact path={"/"} component={() => <Movielist 
