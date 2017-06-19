@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import axios from 'axios';
+import firebase from 'firebase'
 import './App.css';
 import Movielist from './components/movielist';
 import Moviedetail from './components/moviedetail';
+import Firebaselogin from './components/firebaselogin'
 import Main from './components/main';
 import MenuItem from 'material-ui/MenuItem';
 import Menu from 'material-ui/Menu';
@@ -26,11 +28,23 @@ class App extends Component {
       moviedetail: [],
       open: false,
       popopen: false,
+      loginopen: false,
       genres: [],
       page: 1,
       moviefilter: "",
-      apikey: "14d069109bafe2681aa95ad4b60d2a91"
+      apikey: "14d069109bafe2681aa95ad4b60d2a91",
+      email: "saeedmalik360@gmail.com",
+      password: "helloworld",
+      uinfo: []
     };
+  }
+
+  openlogin = () => {
+    this.setState({loginopen: true})
+  }
+
+  signout = () => {
+    firebase.auth().signOut()
   }
 
   handleTouchTap = (event) => {
@@ -44,12 +58,16 @@ class App extends Component {
 
   handleRequestClose = () => {
     this.setState({
-      open: false
+      open: false,
+      loginopen: false
     })
   }
 
   handleOpen = () => {
-    this.setState({popopen: true});
+    this.setState({
+      popopen: true,
+      loginopen: false
+    })
   }
 
   handleClose = () => {
@@ -60,16 +78,13 @@ class App extends Component {
   }
 
   movielsfiltertop = () => {
-    this.setState({moviels: [], moviefilter: "toprated", page: 1})
-    this.gettopratedmovies()
+    this.setState({moviels: [], moviefilter: "toprated", page: 1}, () => {this.gettopratedmovies()});
   }
   movielsfilterup = () => {
-    this.setState({moviels: [], moviefilter: "upcoming", page: 1})
-    this.getupcomingmovies()
+    this.setState({moviels: [], moviefilter: "upcoming", page: 1}, () => {this.getupcomingmovies()});
   }
   movielsfilterpop = () => {
-    this.setState({moviels: [], moviefilter: "popular", page: 1})
-    this.getpopularmovies()
+    this.setState({moviels: [], moviefilter: "popular", page: 1}, () => {this.getpopularmovies()});
   }
   gettopratedmovies = () =>{
     if (this.state.page === 1){
@@ -108,7 +123,7 @@ class App extends Component {
       }    
   }
   getsearch = () => {
-    axios.get(`https://api.themoviedb.org/3/search/movie?api_key=' + this.state.apikey + '&language=en-US&query="` + this.state.search)
+    axios.get(`https://api.themoviedb.org/3/search/movie?api_key=14d069109bafe2681aa95ad4b60d2a91&language=en-US&query="` + this.state.search)
       .then(res => {
         this.setState({ moviels: res.data.results });
       });
@@ -123,13 +138,12 @@ class App extends Component {
 
   searchvalue = (e) => {
     this.setState(
-      {search: e.target.value}
+      {moviels: [], search: e.target.value}, () => {this.getsearch()}
     )
-    this.getsearch()
   }
 
   setpagenumber = () => {
-    this.setState({page: this.state.page + 1})
+    this.setState({page: this.state.page + 1}, () =>{
     switch (this.state.moviefilter) {
         case "popular":
           this.getpopularmovies()
@@ -142,7 +156,7 @@ class App extends Component {
           break
         default:
           console.log("must have category selected")
-    }
+    }})
   }
 
   
@@ -160,11 +174,11 @@ class App extends Component {
         onTouchTap={this.handleClose}
       />,
     ];
+    
     return (
       <Router>
         <div className="App">
           <div className="navbar">
-              <Link to="/"><RaisedButton label="home" primary={true} /></Link>
               <div>
                 <RaisedButton
                   onTouchTap={this.handleTouchTap}
@@ -185,7 +199,8 @@ class App extends Component {
                 </Popover>
               </div>
               
-                <input className="navbarsearch" onChange={this.searchvalue} placeholder="Search Movies and TV Shows"/>
+                <input className="navbarsearch" onChange={this.searchvalue} placeholder={this.state.uinfo.uid}/>
+                <RaisedButton label="home" primary={true} onClick={this.openlogin} />
               
               <div>
                 <IconMenu
@@ -196,7 +211,7 @@ class App extends Component {
                 >
                   <MenuItem primaryText="Watch List" />
                   <MenuItem primaryText="Settings" />
-                  <MenuItem primaryText="Logout" />
+                  <MenuItem onClick={this.signout} primaryText="Logout" />
                 </IconMenu>
               </div>
           </div>
@@ -217,6 +232,13 @@ class App extends Component {
                   )}
                 </div>
                <Moviedetail moviedetailprop={this.state.moviedetail}/>
+              </Dialog>
+            <Dialog
+                modal={false}
+                open={this.state.loginopen}
+                onRequestClose={this.handleRequestClose}
+              >
+                <Firebaselogin closeloginform={this.handleRequestClose}/>
               </Dialog>
 
             <Route exact path={"/"} component={() => <Movielist 
