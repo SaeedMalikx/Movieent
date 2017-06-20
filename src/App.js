@@ -16,6 +16,9 @@ import IconMenu from 'material-ui/IconMenu';
 import IconButton from 'material-ui/IconButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import Dialog from 'material-ui/Dialog';
+import ActionGrade from 'material-ui/svg-icons/action/grade';
+import ActionHome from 'material-ui/svg-icons/action/home';
+import Search from 'material-ui/svg-icons/action/search';
 
 
 
@@ -31,9 +34,9 @@ class App extends Component {
       popopen: false,
       loginopen: false,
       favopen: false,
+      searchopen: false,
       genres: [],
       page: 1,
-      moviefilter: "",
       apikey: "14d069109bafe2681aa95ad4b60d2a91",
     };
   }
@@ -48,6 +51,7 @@ class App extends Component {
   signout = () => {
     firebase.auth().signOut()
   }
+
 
   watchlater = () => {
       
@@ -69,11 +73,21 @@ class App extends Component {
     });
   }
 
+  opensearch = (event) => {
+    event.preventDefault();
+
+    this.setState({
+      searchopen: true,
+      anchorEl: event.currentTarget,
+    });
+  }
+
   handleRequestClose = () => {
     this.setState({
       open: false,
       loginopen: false,
-      favopen: false
+      favopen: false,
+      searchopen: false
     })
   }
 
@@ -92,13 +106,13 @@ class App extends Component {
   }
 
   movielsfiltertop = () => {
-    this.setState({moviels: [], moviefilter: "toprated", page: 1, movieurl: "movie/top_rated?"}, () => {this.getmovie()});
+    this.setState({moviels: [], page: 1, movieurl: "movie/top_rated?"}, () => {this.getmovie()});
   }
   movielsfilterup = () => {
-    this.setState({moviels: [], moviefilter: "upcoming", page: 1, movieurl: "movie/now_playing?"}, () => {this.getmovie()});
+    this.setState({moviels: [], page: 1, movieurl: "movie/now_playing?"}, () => {this.getmovie()});
   }
   movielsfilterpop = () => {
-    this.setState({moviels: [], moviefilter: "popular", page: 1, movieurl: "discover/movie?sort_by=popularity.desc&"}, () => {this.getmovie()});
+    this.setState({moviels: [], page: 1, movieurl: "discover/movie?sort_by=popularity.desc&"}, () => {this.getmovie()});
   }
 
   getmovie = () => {
@@ -129,6 +143,7 @@ class App extends Component {
   }
 
   searchvalue = (e) => {
+    e.preventDefault();
     this.setState(
       {moviels: [], search: e.target.value}, () => {this.getsearch()}
     )
@@ -154,16 +169,33 @@ class App extends Component {
         onTouchTap={this.handleClose}
       />,
     ];
+    const user = firebase.auth().currentUser;
+    let button = null
+    if (user != null) {
+      button =   <IconMenu
+                  iconButtonElement={
+                    <IconButton><MoreVertIcon /></IconButton>
+                  }
+                  targetOrigin={{horizontal: 'right', vertical: 'top'}}
+                  anchorOrigin={{horizontal: 'right', vertical: 'top'}}
+                >
+                  <MenuItem primaryText="Favorites" onClick={this.openfav}/>
+                  <MenuItem primaryText="Sign out" onClick={this.signout}/>
+                </IconMenu>
+    } else {
+      button = <RaisedButton label="Login" secondary={true} onClick={this.openlogin} />
+    }
     
     return (
       <Router>
         <div className="App">
           <div className="navbar">
-              <div>
-                <RaisedButton
-                  onTouchTap={this.handleTouchTap}
-                  label="Movies"
-                />
+              
+                <IconButton>
+                  <ActionHome />
+                </IconButton>
+                <RaisedButton onTouchTap={this.handleTouchTap} primary={true} label="Movies"/>
+                
                 <Popover
                   open={this.state.open}
                   anchorEl={this.state.anchorEl}
@@ -177,21 +209,32 @@ class App extends Component {
                     <MenuItem onClick={this.movielsfilterup} primaryText="In Theatre" />
                   </Menu>
                 </Popover>
-              </div>
-              
-                <input className="navbarsearch" onChange={this.searchvalue} placeholder="Search Movies"/>
-                <RaisedButton label="Favorites" secondary={true} onClick={this.openfav} />
-                <RaisedButton label="Login" secondary={true} onClick={this.openlogin} />
-                <RaisedButton label="Signout" secondary={true} onClick={this.signout} />
+                <Popover
+                  open={this.state.searchopen}
+                  anchorEl={this.state.anchorEl}
+                  anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
+                  targetOrigin={{horizontal: 'right', vertical: 'top'}}
+                  onRequestClose={this.handleRequestClose}
+                >
+                  <input className="navbarsearch" onChange={this.searchvalue} placeholder="Search Movies" />
+                </Popover>
+                <span className="filler"/>
+                <IconButton tooltip="Search" touch={true} tooltipPosition="bottom-center" onClick={this.opensearch}>
+                  <Search />
+                </IconButton>                
+                <IconButton tooltip="Favorites" touch={true} tooltipPosition="bottom-center" onClick={this.openfav}>
+                  <ActionGrade />
+                </IconButton>
+                {button}
           </div>
 
-            <Dialog
-                title={this.state.moviedetail.title}
-                actions={actions}
-                modal={false}
-                open={this.state.popopen}
-                onRequestClose={this.handleClose}
-              >
+            <Dialog title={this.state.moviedetail.title} 
+              autoScrollBodyContent={true} 
+              actions={actions} modal={false} 
+              open={this.state.popopen} 
+              onRequestClose={this.handleClose} 
+              titleClassName="detailtitle"
+            >
                 <div className="chipcontainer">
                   {this.state.genres.map(chip => 
                       <div key={chip.id}>
@@ -202,29 +245,17 @@ class App extends Component {
                   )}
                 </div>
                <Moviedetail moviedetailprop={this.state.moviedetail}/>
-              </Dialog>
+            </Dialog>
  
-            <Dialog
-                modal={false}
-                open={this.state.loginopen}
-                onRequestClose={this.handleRequestClose}
-              >
+            <Dialog modal={false} open={this.state.loginopen} onRequestClose={this.handleRequestClose} autoDetectWindowHeight={true}>
                 <Firebaselogin closeloginform={this.handleRequestClose}/>
-              </Dialog>
+            </Dialog>
 
-            <Dialog
-                modal={false}
-                open={this.state.favopen}
-                onRequestClose={this.handleRequestClose}
-              >
+            <Dialog modal={false} open={this.state.favopen} onRequestClose={this.handleRequestClose}>
                 <Favorites/>
-              </Dialog>
+            </Dialog>
 
-            <Route exact path={"/"} component={() => <Movielist 
-                                                      movielsprop={this.state.moviels} 
-                                                      setid={this.getmoviedetail} 
-                                                      setpage={this.setpagenumber}
-                                                      />}/>
+            <Route exact path={"/"} component={() => <Movielist movielsprop={this.state.moviels} setid={this.getmoviedetail} setpage={this.setpagenumber} />}/>
         </div>
       </Router>
     );

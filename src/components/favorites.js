@@ -1,5 +1,4 @@
 import React from 'react';
-import Toggle from 'material-ui/Toggle';
 import firebase from 'firebase'
 
 
