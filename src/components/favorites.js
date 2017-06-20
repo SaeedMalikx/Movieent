@@ -11,17 +11,25 @@ export default class Favorites extends React.Component {
         super(props);
 
         this.state = {
-            favlist: []
+            favlist: [],
+            nomovie: "WatchList"
         };
     }
+
+
 
     componentWillMount = () => {
       
         const user = firebase.auth().currentUser;
         if (user != null) {
             firebase.database().ref('/users/'+ user.uid).on('value', snap =>{
-                const favz = Object.keys(snap.val())
-                this.setState({favlist: favz})
+                
+                if (snap.val()){
+                    const favz = Object.keys(snap.val())
+                this.setState({favlist: favz} )
+                } else {
+                    this.setState({favlist: [], nomovie: "Add Some Movies :("})
+                }
             });
         }
 
@@ -47,6 +55,7 @@ export default class Favorites extends React.Component {
         
     return (
             <div>
+            <p>{this.state.nomovie}</p>
             {favz}
 
             </div>

@@ -39,7 +39,8 @@ class App extends Component {
       genres: [],
       page: 1,
       apikey: "14d069109bafe2681aa95ad4b60d2a91",
-      snackopen: false
+      snackopen: false,
+      nofavopen: false
     };
   }
 
@@ -49,7 +50,15 @@ class App extends Component {
     this.setState({loginopen: true})
   }
   openfav = () => {
-    this.setState({favopen: true})
+    const user = firebase.auth().currentUser;
+    firebase.database().ref('users').once('value', snap => {
+      if (snap.hasChild(user.uid)){
+        this.setState({favopen: true})
+      } else {
+        this.setState({nofavopen: true})
+      }
+    })
+    
   }
 
   signout = () => {
@@ -92,7 +101,8 @@ class App extends Component {
       loginopen: false,
       favopen: false,
       searchopen: false,
-      snackopen: false
+      snackopen: false,
+      nofavopen: false
     })
   }
 
@@ -107,7 +117,8 @@ class App extends Component {
     this.setState({
       popopen: false,
       moviedetail: [],
-      snackopen: false
+      snackopen: false,
+      nofavopen: false
     });
   }
 
@@ -265,6 +276,13 @@ class App extends Component {
               open={this.state.snackopen}
               message="Added to Favorites"
               autoHideDuration={500}
+            />
+
+            <Snackbar
+              open={this.state.nofavopen}
+              message="You WatchList is Empty, Add Some Movies"
+              autoHideDuration={4000}
+              onRequestClose={this.handleRequestClose}
             />
 
             <Route exact path={"/"} component={() => <Movielist movielsprop={this.state.moviels} setid={this.getmoviedetail} setpage={this.setpagenumber} />}/>
