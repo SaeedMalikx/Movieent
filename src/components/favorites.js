@@ -1,5 +1,8 @@
 import React from 'react';
-import firebase from 'firebase'
+import firebase from 'firebase';
+import {List, ListItem} from 'material-ui/List';
+import ActionInfo from 'material-ui/svg-icons/action/delete';
+
 
 
 
@@ -23,14 +26,23 @@ export default class Favorites extends React.Component {
         }
 
     }
-    console = () => {
-        console.log(this.state.favlist)
+
+    removefromwatchlist = (xname) => {
+        const user = firebase.auth().currentUser;
+        if (user != null) {
+            firebase.database().ref('users').child(user.uid).child(xname).remove();
+        }
     }
 
    
     render() {
-        const favz = this.state.favlist.map( (name) => {
-            return <p key={name}>{name}</p>
+        const favz = this.state.favlist.map( (name, index) => {
+            return <div key={name}><List><ListItem
+                                        leftCheckbox={<ActionInfo onClick={() => {this.removefromwatchlist(name)}} />}
+                                        primaryText={name}
+                                        />
+                                    </List>
+                    </div>
         })
         
     return (

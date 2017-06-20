@@ -19,6 +19,7 @@ import Dialog from 'material-ui/Dialog';
 import ActionGrade from 'material-ui/svg-icons/action/grade';
 import ActionHome from 'material-ui/svg-icons/action/home';
 import Search from 'material-ui/svg-icons/action/search';
+import Snackbar from 'material-ui/Snackbar';
 
 
 
@@ -38,8 +39,11 @@ class App extends Component {
       genres: [],
       page: 1,
       apikey: "14d069109bafe2681aa95ad4b60d2a91",
+      snackopen: false
     };
   }
+
+
 
   openlogin = () => {
     this.setState({loginopen: true})
@@ -49,7 +53,8 @@ class App extends Component {
   }
 
   signout = () => {
-    firebase.auth().signOut()
+    firebase.auth().signOut();
+ 
   }
 
 
@@ -58,10 +63,9 @@ class App extends Component {
     const user = firebase.auth().currentUser;
     const value =  this.state.moviedetail.id
     if (user != null) {
-    firebase.database().ref('/users/'+ user.uid + '/' + this.state.moviedetail.title).set({value
-    });
+    firebase.database().ref('/users/'+ user.uid + '/' + this.state.moviedetail.title).set({value});
+    this.setState({snackopen: true})
     }
-
   }
 
   handleTouchTap = (event) => {
@@ -87,7 +91,8 @@ class App extends Component {
       open: false,
       loginopen: false,
       favopen: false,
-      searchopen: false
+      searchopen: false,
+      snackopen: false
     })
   }
 
@@ -101,7 +106,8 @@ class App extends Component {
   handleClose = () => {
     this.setState({
       popopen: false,
-      moviedetail: []
+      moviedetail: [],
+      snackopen: false
     });
   }
 
@@ -182,7 +188,7 @@ class App extends Component {
                   <MenuItem primaryText="Favorites" onClick={this.openfav}/>
                   <MenuItem primaryText="Sign out" onClick={this.signout}/>
                 </IconMenu>
-    } else {
+    } else  {
       button = <RaisedButton label="Login" secondary={true} onClick={this.openlogin} />
     }
     
@@ -254,6 +260,12 @@ class App extends Component {
             <Dialog modal={false} open={this.state.favopen} onRequestClose={this.handleRequestClose}>
                 <Favorites/>
             </Dialog>
+
+            <Snackbar
+              open={this.state.snackopen}
+              message="Added to Favorites"
+              autoHideDuration={500}
+            />
 
             <Route exact path={"/"} component={() => <Movielist movielsprop={this.state.moviels} setid={this.getmoviedetail} setpage={this.setpagenumber} />}/>
         </div>
