@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import axios from 'axios';
 import firebase from 'firebase'
 import './App.css';
@@ -7,7 +6,6 @@ import Movielist from './components/movielist';
 import Moviedetail from './components/moviedetail';
 import Firebaselogin from './components/firebaselogin'
 import Favorites from './components/favorites'
-import Main from './components/main';
 import MenuItem from 'material-ui/MenuItem';
 import Menu from 'material-ui/Menu';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -31,6 +29,7 @@ class App extends Component {
       moviels: [],
       search: "",
       moviedetail: [],
+      currentcat: "",
       open: false,
       popopen: false,
       loginopen: false,
@@ -44,7 +43,9 @@ class App extends Component {
     };
   }
 
-
+  componentDidMount = () => {
+    this.movielsfilterpop()
+  }
   openlogin = () => {
     this.setState({loginopen: true})
   }
@@ -62,6 +63,7 @@ class App extends Component {
 
   signout = () => {
     firebase.auth().signOut();
+
  
   }
 
@@ -125,13 +127,13 @@ class App extends Component {
   }
 
   movielsfiltertop = () => {
-    this.setState({moviels: [], page: 1, movieurl: "movie/top_rated?"}, () => {this.getmovie()});
+    this.setState({moviels: [], currentcat: "Top Rated", page: 1, movieurl: "movie/top_rated?"}, () => {this.getmovie()});
   }
   movielsfilterup = () => {
-    this.setState({moviels: [], page: 1, movieurl: "movie/now_playing?"}, () => {this.getmovie()});
+    this.setState({moviels: [], currentcat: "Now Playing", page: 1, movieurl: "movie/now_playing?"}, () => {this.getmovie()});
   }
   movielsfilterpop = () => {
-    this.setState({moviels: [], page: 1, movieurl: "discover/movie?sort_by=popularity.desc&"}, () => {this.getmovie()});
+    this.setState({moviels: [], currentcat: "Popular", page: 1, movieurl: "discover/movie?sort_by=popularity.desc&"}, () => {this.getmovie()});
   }
 
   getmovie = () => {
@@ -173,10 +175,6 @@ class App extends Component {
     this.getmovie()})
   }
 
-  gohome = () => {
-    console.log(this.state.favlist)
-  }
-
   
   render() {
     const actions = [
@@ -210,13 +208,9 @@ class App extends Component {
     }
     
     return (
-      <Router>
         <div className="App">
           <div className="navbar">
               
-                <IconButton onClick={this.gohome}>
-                  <ActionHome />
-                </IconButton>
                 <RaisedButton onTouchTap={this.handleTouchTap} primary={true} label="Movies"/>
                 
                 <Popover
@@ -241,6 +235,7 @@ class App extends Component {
                 >
                   <input className="navbarsearch" onChange={this.searchvalue} placeholder="Search Movies" />
                 </Popover>
+                <h3> {this.state.currentcat}</h3>
                 <span className="filler"/>
                 <IconButton tooltip="Search" touch={true} tooltipPosition="bottom-center" onClick={this.opensearch}>
                   <Search />
@@ -275,7 +270,7 @@ class App extends Component {
             </Dialog>
 
             <Dialog modal={false} open={this.state.favopen} onRequestClose={this.handleRequestClose}>
-                <Favorites favlistprop={this.state.favlist} nomovieprop={this.state.nomovie}/>
+                <Favorites />
             </Dialog>
 
             <Snackbar
@@ -291,9 +286,9 @@ class App extends Component {
               onRequestClose={this.handleRequestClose}
             />
 
-            <Route exact path={"/"} component={() => <Movielist movielsprop={this.state.moviels} setid={this.getmoviedetail} setpage={this.setpagenumber} />}/>
-        </div>
-      </Router>
+
+            <Movielist movielsprop={this.state.moviels} setid={this.getmoviedetail} setpage={this.setpagenumber} />
+      </div>
     );
   }
 }

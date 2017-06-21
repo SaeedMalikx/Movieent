@@ -21,7 +21,6 @@ export default class Favorites extends React.Component {
         const user = firebase.auth().currentUser;
         if (user != null) {
             firebase.database().ref('users').child(user.uid).on('value', snap =>{
-              console.log(snap.val())
                 
                 if (snap.val()) {
                     let items = snap.val();
