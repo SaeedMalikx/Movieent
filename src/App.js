@@ -40,10 +40,9 @@ class App extends Component {
       page: 1,
       apikey: "14d069109bafe2681aa95ad4b60d2a91",
       snackopen: false,
-      nofavopen: false
+      nofavopen: false,
     };
   }
-
 
 
   openlogin = () => {
@@ -70,9 +69,12 @@ class App extends Component {
   watchlater = () => {
       
     const user = firebase.auth().currentUser;
-    const value =  this.state.moviedetail.id
+    const value =  this.state.moviedetail
     if (user != null) {
-    firebase.database().ref('/users/'+ user.uid + '/' + this.state.moviedetail.title).set({value});
+    firebase.database().ref('/users/'+ user.uid).push({
+      'title': value.title,
+      'urlid': value.id
+    });
     this.setState({snackopen: true})
     }
   }
@@ -171,6 +173,10 @@ class App extends Component {
     this.getmovie()})
   }
 
+  gohome = () => {
+    console.log(this.state.favlist)
+  }
+
   
   render() {
     const actions = [
@@ -208,7 +214,7 @@ class App extends Component {
         <div className="App">
           <div className="navbar">
               
-                <IconButton>
+                <IconButton onClick={this.gohome}>
                   <ActionHome />
                 </IconButton>
                 <RaisedButton onTouchTap={this.handleTouchTap} primary={true} label="Movies"/>
@@ -269,7 +275,7 @@ class App extends Component {
             </Dialog>
 
             <Dialog modal={false} open={this.state.favopen} onRequestClose={this.handleRequestClose}>
-                <Favorites/>
+                <Favorites favlistprop={this.state.favlist} nomovieprop={this.state.nomovie}/>
             </Dialog>
 
             <Snackbar
