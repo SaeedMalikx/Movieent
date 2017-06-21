@@ -18,6 +18,8 @@ import ActionGrade from 'material-ui/svg-icons/action/grade';
 import ActionHome from 'material-ui/svg-icons/action/home';
 import Search from 'material-ui/svg-icons/action/search';
 import Snackbar from 'material-ui/Snackbar';
+import Drawer from 'material-ui/Drawer';
+import Menuicon from 'material-ui/svg-icons/navigation/menu';
 
 
 
@@ -119,23 +121,27 @@ class App extends Component {
 
   handleClose = () => {
     this.setState({
+      open: false,
       popopen: false,
       moviedetail: [],
       snackopen: false,
-      nofavopen: false
+      nofavopen: false,
+      
     });
   }
 
   movielsfiltertop = () => {
-    this.setState({moviels: [], currentcat: "Top Rated", page: 1, movieurl: "movie/top_rated?"}, () => {this.getmovie()});
+    this.setState({moviels: [], open: false, currentcat: "Top Rated", page: 1, movieurl: "movie/top_rated?"}, () => {this.getmovie()});
   }
   movielsfilterup = () => {
-    this.setState({moviels: [], currentcat: "Now Playing", page: 1, movieurl: "movie/now_playing?"}, () => {this.getmovie()});
+    this.setState({moviels: [], open: false, currentcat: "Now Playing", page: 1, movieurl: "movie/now_playing?"}, () => {this.getmovie()});
   }
   movielsfilterpop = () => {
-    this.setState({moviels: [], currentcat: "Popular", page: 1, movieurl: "discover/movie?sort_by=popularity.desc&"}, () => {this.getmovie()});
+    this.setState({moviels: [], open: false, currentcat: "Popular", page: 1, movieurl: "discover/movie?sort_by=popularity.desc&"}, () => {this.getmovie()});
   }
-
+  movielsfilternow = () => {
+    this.setState({moviels: [], open: false, currentcat: "Upcoming", page: 1, movieurl: "movie/upcoming?"}, () => {this.getmovie()});
+  }
   getmovie = () => {
     if (this.state.page === 1){
      axios.get('https://api.themoviedb.org/3/' + this.state.movieurl + 'api_key=' + this.state.apikey + '&language=en-US&page=' + this.state.page)
@@ -211,21 +217,14 @@ class App extends Component {
         <div className="App">
           <div className="navbar">
               
-                <RaisedButton onTouchTap={this.handleTouchTap} primary={true} label="Movies"/>
+                <Menuicon onTouchTap={this.handleTouchTap} />
                 
-                <Popover
-                  open={this.state.open}
-                  anchorEl={this.state.anchorEl}
-                  anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
-                  targetOrigin={{horizontal: 'left', vertical: 'top'}}
-                  onRequestClose={this.handleRequestClose}
-                >
-                  <Menu>
-                    <MenuItem onClick={this.movielsfilterpop} primaryText="Popular" />
-                    <MenuItem onClick={this.movielsfiltertop} primaryText="Top Rated" />
-                    <MenuItem onClick={this.movielsfilterup} primaryText="In Theatre" />
-                  </Menu>
-                </Popover>
+                <Drawer open={this.state.open} docked={false} onRequestChange={(open) => this.setState({open})}>
+                  <MenuItem onClick={this.movielsfilterpop}>Popular</MenuItem>
+                  <MenuItem onClick={this.movielsfiltertop}>Top Rated</MenuItem>
+                  <MenuItem onClick={this.movielsfilterup}>Now Playing</MenuItem>
+                  <MenuItem onClick={this.movielsfilternow}>Upcoming</MenuItem>
+                </Drawer>
                 <Popover
                   open={this.state.searchopen}
                   anchorEl={this.state.anchorEl}
@@ -235,7 +234,8 @@ class App extends Component {
                 >
                   <input className="navbarsearch" onChange={this.searchvalue} placeholder="Search Movies" />
                 </Popover>
-                <h3> {this.state.currentcat}</h3>
+                <span className="filler"/>
+                <h3>{this.state.currentcat}</h3>
                 <span className="filler"/>
                 <IconButton tooltip="Search" touch={true} tooltipPosition="bottom-center" onClick={this.opensearch}>
                   <Search />

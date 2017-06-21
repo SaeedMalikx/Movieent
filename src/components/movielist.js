@@ -14,7 +14,7 @@ export default class movielist extends React.Component {
   }
   render() {
     let morebutton = null
-    if (this.props.movielsprop.length > 1){
+    if (this.props.movielsprop){
       morebutton = <button className="morebutton" onClick={this.setpager}>MORE</button>
     }
     return (
