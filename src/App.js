@@ -77,9 +77,11 @@ class App extends Component {
         }
     })
   }
+
   openlogin = () => {
     this.setState({loginopen: true})
   }
+
   openfav = () => {
     const user = firebase.auth().currentUser;
     firebase.database().ref('users').once('value', snap => {
@@ -98,9 +100,7 @@ class App extends Component {
  
   }
 
-
   watchlater = () => {
-      
     const user = firebase.auth().currentUser;
     const value =  this.state.moviedetail
     if (user != null) {
@@ -198,6 +198,14 @@ class App extends Component {
     this.setState({popopen: true});  
   }
 
+  getfavmoviedetail = (id) => {
+    axios.get("https://api.themoviedb.org/3/movie/" + id + "?api_key=" + this.state.apikey + "&language=en-US")
+    .then(res => {
+      this.setState({ moviedetail: res.data, genres: res.data.genres });
+    });
+    this.setState({popopen: true, favopen: false});  
+  }
+
   searchvalue = (e) => {
     e.preventDefault();
     this.setState(
@@ -293,7 +301,7 @@ class App extends Component {
             </Dialog>
 
             <Dialog modal={false} open={this.state.favopen} onRequestClose={this.handleRequestClose}>
-                <Favorites favlistprop={this.state.favlist} nomovieprop={this.state.nomovie} />
+                <Favorites favlistprop={this.state.favlist} nomovieprop={this.state.nomovie} getfavmoviedetailprop={this.getfavmoviedetail}/>
             </Dialog>
 
             <Snackbar

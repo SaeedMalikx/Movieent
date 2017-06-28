@@ -11,7 +11,9 @@ export default class Favorites extends React.Component {
   
     
 
-
+    getfavmoviedetailer = (urlid) => {
+        this.props.getfavmoviedetailprop(urlid)
+    }
     removefromwatchlist = (xname) => {
         const user = firebase.auth().currentUser;
         if (user != null) {
@@ -23,6 +25,7 @@ export default class Favorites extends React.Component {
     render() {
         const favz = this.props.favlistprop.map( (name) => {
             return <div key={name.id}><List><ListItem
+                                        onClick={()=>{this.getfavmoviedetailer(name.user)}}
                                         leftCheckbox={<ActionInfo onClick={() => {this.removefromwatchlist(name.id)}} />}
                                         primaryText={name.title}
                                         />
