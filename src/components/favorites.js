@@ -7,38 +7,9 @@ import ActionInfo from 'material-ui/svg-icons/action/delete';
 
 
 export default class Favorites extends React.Component {
-      constructor(props) {
-    super(props);
-
-    this.state = {
-        favlist: [],
-        nomovie: "Watch List"
-    };
-  }
+    
   
-    componentWillMount = () => {
-      
-        const user = firebase.auth().currentUser;
-        if (user != null) {
-            firebase.database().ref('users').child(user.uid).on('value', snap =>{
-                
-                if (snap.val()) {
-                    let items = snap.val();
-                    let movietransfer = [];
-                    for (let item in items) {
-                      movietransfer.push({
-                        id: item,
-                        title: items[item].title,
-                        user: items[item].urlid
-                      })
-                      this.setState({favlist: movietransfer})
-                    }
-                } else {
-                    this.setState({favlist: [], nomovie: "Add Some Movies :("})
-                }
-            });
-        }
-    }
+    
 
 
     removefromwatchlist = (xname) => {
@@ -50,7 +21,7 @@ export default class Favorites extends React.Component {
 
    
     render() {
-        const favz = this.state.favlist.map( (name) => {
+        const favz = this.props.favlistprop.map( (name) => {
             return <div key={name.id}><List><ListItem
                                         leftCheckbox={<ActionInfo onClick={() => {this.removefromwatchlist(name.id)}} />}
                                         primaryText={name.title}
@@ -61,8 +32,8 @@ export default class Favorites extends React.Component {
         
     return (
             <div>
-            <p>{this.state.nomovie}</p>
-            {favz}
+                <p>{this.props.nomovieprop}</p>
+                {favz}
 
             </div>
         

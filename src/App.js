@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import firebase from 'firebase'
 import './App.css';
+
 import Movielist from './components/movielist';
 import Moviedetail from './components/moviedetail';
 import Firebaselogin from './components/firebaselogin'
 import Favorites from './components/favorites'
+
 import MenuItem from 'material-ui/MenuItem';
-import Menu from 'material-ui/Menu';
 import RaisedButton from 'material-ui/RaisedButton';
 import Popover from 'material-ui/Popover';
 import IconMenu from 'material-ui/IconMenu';
@@ -15,7 +16,6 @@ import IconButton from 'material-ui/IconButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import Dialog from 'material-ui/Dialog';
 import ActionGrade from 'material-ui/svg-icons/action/grade';
-import ActionHome from 'material-ui/svg-icons/action/home';
 import Search from 'material-ui/svg-icons/action/search';
 import Snackbar from 'material-ui/Snackbar';
 import Drawer from 'material-ui/Drawer';
@@ -42,11 +42,39 @@ class App extends Component {
       apikey: "14d069109bafe2681aa95ad4b60d2a91",
       snackopen: false,
       nofavopen: false,
+      favlist: [],
+      isloggedin: null,
+      nomovie: ""
     };
   }
-
+ 
   componentDidMount = () => {
     this.movielsfilterpop()
+
+    firebase.auth().onAuthStateChanged(user => {
+        if (user != null) {
+          this.setState({isloggedin: true})
+            firebase.database().ref('users').child(user.uid).on('value', snap =>{
+                
+                if (snap.val()) {
+                    let items = snap.val();
+                    let movietransfer = [];
+                    for (let item in items) {
+                      movietransfer.push({
+                        id: item,
+                        title: items[item].title,
+                        user: items[item].urlid
+                      })
+                      this.setState({favlist: movietransfer, nomovie: ""})
+                    }
+                } else {
+                    this.setState({favlist: [], nomovie: "Add Some Movies :("})
+                }
+            });
+        } else {
+          this.setState({isloggedin: false})
+        }
+    })
   }
   openlogin = () => {
     this.setState({loginopen: true})
@@ -181,6 +209,13 @@ class App extends Component {
     this.getmovie()})
   }
 
+  removefromwatchlist = (xname) => {
+        const user = firebase.auth().currentUser;
+        if (user != null) {
+            firebase.database().ref('users').child(user.uid).child(xname).remove();
+        }
+    }
+
   
   render() {
     const actions = [
@@ -196,22 +231,22 @@ class App extends Component {
         onTouchTap={this.handleClose}
       />,
     ];
-    const user = firebase.auth().currentUser;
+    
     let button = null
-    if (user != null) {
-      button =   <IconMenu
-                  iconButtonElement={
-                    <IconButton><MoreVertIcon /></IconButton>
-                  }
-                  targetOrigin={{horizontal: 'right', vertical: 'top'}}
-                  anchorOrigin={{horizontal: 'right', vertical: 'top'}}
-                >
-                  <MenuItem primaryText="Favorites" onClick={this.openfav}/>
-                  <MenuItem primaryText="Sign out" onClick={this.signout}/>
-                </IconMenu>
-    } else  {
-      button = <RaisedButton label="Login" secondary={true} onClick={this.openlogin} />
-    }
+      if (this.state.isloggedin) {
+        button =   <IconMenu
+                    iconButtonElement={
+                      <IconButton><MoreVertIcon /></IconButton>
+                    }
+                    targetOrigin={{horizontal: 'right', vertical: 'top'}}
+                    anchorOrigin={{horizontal: 'right', vertical: 'top'}}
+                  >
+                    <MenuItem primaryText="Favorites" onClick={this.openfav}/>
+                    <MenuItem primaryText="Sign out" onClick={this.signout}/>
+                  </IconMenu>
+      } else  {
+        button = <RaisedButton label="Login" secondary={true} onClick={this.openlogin} />
+      }
     
     return (
         <div className="App">
@@ -270,7 +305,7 @@ class App extends Component {
             </Dialog>
 
             <Dialog modal={false} open={this.state.favopen} onRequestClose={this.handleRequestClose}>
-                <Favorites />
+                <Favorites favlistprop={this.state.favlist} nomovieprop={this.state.nomovie} />
             </Dialog>
 
             <Snackbar
