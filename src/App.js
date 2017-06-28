@@ -20,6 +20,7 @@ import Search from 'material-ui/svg-icons/action/search';
 import Snackbar from 'material-ui/Snackbar';
 import Drawer from 'material-ui/Drawer';
 import Menuicon from 'material-ui/svg-icons/navigation/menu';
+import Star from 'material-ui/svg-icons/toggle/star';
 
 
 
@@ -209,27 +210,14 @@ class App extends Component {
     this.getmovie()})
   }
 
-  removefromwatchlist = (xname) => {
-        const user = firebase.auth().currentUser;
-        if (user != null) {
-            firebase.database().ref('users').child(user.uid).child(xname).remove();
-        }
-    }
-
-  
   render() {
     const actions = [
       <RaisedButton
         label="Watch Later"
         primary={true}
         onTouchTap={this.watchlater}
-      />,
-      <RaisedButton
-        label="Close"
-        primary={true}
-        keyboardFocused={true}
-        onTouchTap={this.handleClose}
-      />,
+        icon={<Star/>}
+      />
     ];
     
     let button = null

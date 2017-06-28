@@ -31,6 +31,7 @@
 .chipcontainer{
   display: flex;
   align-content: flex-start;
+  justify-content: center;
   flex-wrap: wrap;
 }
 
@@ -49,3 +50,12 @@
   text-align: center !important;
   font-size: 2.5em !important;
 }
+
+@media only screen and (max-width: 500px) {
+    .detailtitle {
+        font-size: 1.5em !important;
+    }
+}
+
+
+
