@@ -1,6 +1,6 @@
 import React from 'react';
 import './intro.css'
-
+import { Link } from 'react-router-dom'
 
 
 export default class Intro extends React.Component {
@@ -13,26 +13,26 @@ export default class Intro extends React.Component {
     return (
           <div>
              <div className="introcontainer">
-                <div className="popularimage">
+                <Link to="/movies"><div className="popularimage" onClick={()=>{this.props.proppop()}}>
                     <div className="labelholder">
                         <div className="label">Popular</div>
                     </div>
-                </div>
-                <div className="topratedimage">
+                </div></Link>
+                <Link to="/movies"><div className="topratedimage" onClick={()=>{this.props.proptop()}}>
                     <div className="labelholder">
                         <div className="labelred">Top rated</div>
                     </div>
-                </div>
-                <div className="nowplayingimage">
+                </div></Link>
+                <Link to="/movies"><div className="nowplayingimage" onClick={()=>{this.props.propnow()}}>
                     <div className="labelholder">
                         <div className="labelblue">Now Playing</div>
                     </div>
-                </div>
-                <div className="upcomingimage">
+                </div></Link>
+                <Link to="/movies"><div className="upcomingimage" onClick={()=>{this.props.propup()}}>
                     <div className="labelholder">
                         <div className="labelorange">Upcoming</div>
                     </div>
-                </div>
+                </div></Link>
              </div>
           </div>
         

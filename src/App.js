@@ -168,7 +168,7 @@ class App extends Component {
     this.setState({moviels: [], open: false, currentcat: "Now Playing", page: 1, movieurl: "movie/now_playing?"}, () => {this.getmovie()});
   }
   movielsfilterpop = () => {
-    this.setState({moviels: [], open: false, currentcat: "Popular", page: 1, movieurl: "discover/movie?sort_by=popularity.desc&"}, () => {this.getmovie()});
+    this.setState({moviels: [], open: false, currentcat: "Popular", page: 1, movieurl: "movie/popular?"}, () => {this.getmovie()});
   }
   movielsfilternow = () => {
     this.setState({moviels: [], open: false, currentcat: "Upcoming", page: 1, movieurl: "movie/upcoming?"}, () => {this.getmovie()});
@@ -192,6 +192,7 @@ class App extends Component {
         this.setState({ moviels: res.data.results });
       });
   }
+
   getmoviedetail = (id) => {
     axios.get("https://api.themoviedb.org/3/movie/" + id + "?api_key=" + this.state.apikey + "&language=en-US")
     .then(res => {
@@ -323,7 +324,13 @@ class App extends Component {
             <Snacks snackopenprop={this.state.snackopen} nofavopenprop={this.state.nofavopen}/>
 
             <Route exact path={"/movies"} component={() => <Movielist movielsprop={this.state.moviels} setid={this.getmoviedetail} setpage={this.setpagenumber} />}/>
-            <Route exact path={"/"} component={() => <Intro/>}/>
+            <Route exact path={"/"} component={() => <Intro 
+                                                      proppop={this.movielsfilterpop}
+                                                      proptop={this.movielsfiltertop}
+                                                      propup={this.movielsfilterup}
+                                                      propnow={this.movielsfilternow}
+                                              
+                                              />}/>
       </div>
       </BrowserRouter>
     );
