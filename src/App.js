@@ -2,12 +2,14 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import firebase from 'firebase'
 import './App.css';
+import { BrowserRouter, Route, Link } from 'react-router-dom'
 
 import Movielist from './components/movielist';
 import Moviedetail from './components/moviedetail';
 import Firebaselogin from './components/firebaselogin'
 import Favorites from './components/favorites'
 import Snacks from './components/snacks'
+import Intro from './components/intro'
 
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -251,16 +253,18 @@ class App extends Component {
       }
     
     return (
+        <BrowserRouter>
         <div className="App">
           <div className="navbar">
               
                 <Menuicon onTouchTap={this.handleTouchTap} />
                 
                 <Drawer open={this.state.open} docked={false} onRequestChange={(open) => this.setState({open})}>
-                  <MenuItem onClick={this.movielsfilterpop}>Popular</MenuItem>
-                  <MenuItem onClick={this.movielsfiltertop}>Top Rated</MenuItem>
-                  <MenuItem onClick={this.movielsfilterup}>Now Playing</MenuItem>
-                  <MenuItem onClick={this.movielsfilternow}>Upcoming</MenuItem>
+                  <Link to="/"><MenuItem>Home</MenuItem></Link>
+                  <Link to="/movies"><MenuItem onClick={this.movielsfilterpop}>Popular</MenuItem></Link>
+                  <Link to="/movies"><MenuItem onClick={this.movielsfiltertop}>Top Rated</MenuItem></Link>
+                  <Link to="/movies"><MenuItem onClick={this.movielsfilterup}>Now Playing</MenuItem></Link>
+                  <Link to="/movies"><MenuItem onClick={this.movielsfilternow}>Upcoming</MenuItem></Link>
                 </Drawer>
 
                 <Popover
@@ -285,7 +289,7 @@ class App extends Component {
                 </IconButton>
 
                 {button}
-                
+
           </div>
 
             <Dialog title={this.state.moviedetail.title} 
@@ -317,9 +321,11 @@ class App extends Component {
             </Dialog>
 
             <Snacks snackopenprop={this.state.snackopen} nofavopenprop={this.state.nofavopen}/>
-            
-            <Movielist movielsprop={this.state.moviels} setid={this.getmoviedetail} setpage={this.setpagenumber} />
+
+            <Route exact path={"/movies"} component={() => <Movielist movielsprop={this.state.moviels} setid={this.getmoviedetail} setpage={this.setpagenumber} />}/>
+            <Route exact path={"/"} component={() => <Intro/>}/>
       </div>
+      </BrowserRouter>
     );
   }
 }
