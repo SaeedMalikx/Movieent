@@ -51,6 +51,10 @@
   font-size: 2.5em !important;
 }
 
+.dialogwidth {
+  width: 100% !important;
+}
+
 @media only screen and (max-width: 500px) {
     .detailtitle {
         font-size: 1.5em !important;

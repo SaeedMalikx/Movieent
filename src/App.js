@@ -7,6 +7,7 @@ import Movielist from './components/movielist';
 import Moviedetail from './components/moviedetail';
 import Firebaselogin from './components/firebaselogin'
 import Favorites from './components/favorites'
+import Snacks from './components/snacks'
 
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -17,7 +18,6 @@ import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import Dialog from 'material-ui/Dialog';
 import ActionGrade from 'material-ui/svg-icons/action/grade';
 import Search from 'material-ui/svg-icons/action/search';
-import Snackbar from 'material-ui/Snackbar';
 import Drawer from 'material-ui/Drawer';
 import Menuicon from 'material-ui/svg-icons/navigation/menu';
 import Star from 'material-ui/svg-icons/toggle/star';
@@ -221,9 +221,15 @@ class App extends Component {
   render() {
     const actions = [
       <RaisedButton
-        label="Watch Later"
+        label="Add to Fav"
         primary={true}
         onTouchTap={this.watchlater}
+        icon={<Star/>}
+        style={style.button}
+      />,
+      <RaisedButton
+        secondary={true}
+        onTouchTap={this.openfav}
         icon={<Star/>}
       />
     ];
@@ -256,6 +262,7 @@ class App extends Component {
                   <MenuItem onClick={this.movielsfilterup}>Now Playing</MenuItem>
                   <MenuItem onClick={this.movielsfilternow}>Upcoming</MenuItem>
                 </Drawer>
+
                 <Popover
                   open={this.state.searchopen}
                   anchorEl={this.state.anchorEl}
@@ -265,16 +272,20 @@ class App extends Component {
                 >
                   <input className="navbarsearch" onChange={this.searchvalue} placeholder="Search Movies" />
                 </Popover>
+
                 <span className="filler"/>
                 <h3>{this.state.currentcat}</h3>
                 <span className="filler"/>
+
                 <IconButton tooltip="Search" touch={true} tooltipPosition="bottom-center" onClick={this.opensearch}>
                   <Search />
                 </IconButton>                
                 <IconButton tooltip="Favorites" touch={true} tooltipPosition="bottom-center" onClick={this.openfav}>
                   <ActionGrade />
                 </IconButton>
+
                 {button}
+                
           </div>
 
             <Dialog title={this.state.moviedetail.title} 
@@ -283,6 +294,7 @@ class App extends Component {
               open={this.state.popopen} 
               onRequestClose={this.handleClose} 
               titleClassName="detailtitle"
+              contentClassName="dialogwidth"
             >
                 <div className="chipcontainer">
                   {this.state.genres.map(chip => 
@@ -296,34 +308,27 @@ class App extends Component {
                <Moviedetail moviedetailprop={this.state.moviedetail}/>
             </Dialog>
  
-            <Dialog modal={false} open={this.state.loginopen} onRequestClose={this.handleRequestClose} autoDetectWindowHeight={true}>
+            <Dialog modal={false} open={this.state.loginopen} onRequestClose={this.handleRequestClose} contentClassName="dialogwidth">
                 <Firebaselogin closeloginform={this.handleRequestClose}/>
             </Dialog>
 
-            <Dialog modal={false} open={this.state.favopen} onRequestClose={this.handleRequestClose}>
+            <Dialog modal={false} open={this.state.favopen} onRequestClose={this.handleRequestClose} fullwidth={true} autoScrollBodyContent={true} contentClassName="dialogwidth">
                 <Favorites favlistprop={this.state.favlist} nomovieprop={this.state.nomovie} getfavmoviedetailprop={this.getfavmoviedetail}/>
             </Dialog>
 
-            <Snackbar
-              open={this.state.snackopen}
-              message="Added to Favorites"
-              autoHideDuration={500}
-            />
-
-            <Snackbar
-              open={this.state.nofavopen}
-              message="You WatchList is Empty, Add Some Movies"
-              autoHideDuration={4000}
-              onRequestClose={this.handleRequestClose}
-            />
-
-
+            <Snacks snackopenprop={this.state.snackopen} nofavopenprop={this.state.nofavopen}/>
+            
             <Movielist movielsprop={this.state.moviels} setid={this.getmoviedetail} setpage={this.setpagenumber} />
       </div>
     );
   }
 }
 
+const style = {
+  button: {
+    margin: 12,
+  }
+};
 export default App;
 
 

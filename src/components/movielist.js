@@ -23,7 +23,6 @@ export default class movielist extends React.Component {
             {this.props.movielsprop.map((post, index) =>
               <div className="image" key={index}>
                 <img className="movieposterimage" src={'https://image.tmdb.org/t/p/w300/' + post.poster_path} alt={post.title} onClick={() => {this.getmoviedetailer(post.id)}} />     
-                <h2 className="movielstitle">{post.title}</h2>
               </div>
             )}
             
