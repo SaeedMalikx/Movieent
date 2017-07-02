@@ -2,13 +2,9 @@ import React from 'react';
 import './intro.css'
 import { Link } from 'react-router-dom'
 
-import Paper from 'material-ui/Paper';
-
 export default class Intro extends React.Component {
 
-    
-
-
+  
   render() {
       
     return (
@@ -64,6 +60,9 @@ export default class Intro extends React.Component {
                     </Link>
                 </div>
                 )}
+             </div>
+             <div className="labeldb">
+                 <b>More Features Coming Soon </b>
              </div>
              
           </div>

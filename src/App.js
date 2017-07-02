@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import firebase from 'firebase'
 import './App.css';
-import { BrowserRouter, Route, Link } from 'react-router-dom'
+import { BrowserRouter, Route } from 'react-router-dom'
 
 import Movielist from './components/movielist';
 import Genresmovielist from './components/genresmovielist'
@@ -13,6 +13,7 @@ import Snacks from './components/snacks'
 import Intro from './components/intro'
 import People from './components/people'
 import Moviemenu from './components/menu'
+import About from './components/about'
 
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -380,8 +381,6 @@ class App extends Component {
                 <Favorites favlistprop={this.state.favlist} nomovieprop={this.state.nomovie} getfavmoviedetailprop={this.getfavmoviedetail}/>
             </Dialog>
 
-            <footer className="pagefooter"></footer>
-
             <Snacks snackopenprop={this.state.snackopen} nofavopenprop={this.state.nofavopen}/>
 
             <Route exact path={"/people"} component={() => <People castmovieprop={this.state.castmovie} setidprop={this.getmoviedetail}/>}/>
@@ -389,6 +388,8 @@ class App extends Component {
             <Route exact path={"/movies"} component={() => <Movielist movielsprop={this.state.moviels} setid={this.getmoviedetail} setpage={this.setpagenumber} />}/>
 
             <Route exact path={"/genres"} component={() => <Genresmovielist movielsgenreprop={this.state.movielsgenre} setid={this.getmoviedetail} setpage={this.setgenrepagenumber} />}/>
+
+            <Route exact path={"/about"} component={() => <About/>}/>
 
             <Route exact path={"/"} component={() => <Intro 
                                                       proppop={this.movielsfilterpop}
@@ -398,7 +399,9 @@ class App extends Component {
                                                       popcastprop={this.state.popcast}
                                                       getcastmovieprop={this.getcastmovie}
                                                       getmoviesbygenresprop={this.movielsgenrefilter}
+                                                      setmaincat={this.setcat}
                                               />}/>
+            
       </div>
       </BrowserRouter>
     );

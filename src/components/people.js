@@ -1,6 +1,5 @@
 import React from 'react';
 import './people.css'
-import RaisedButton from 'material-ui/RaisedButton';
 
 
 

@@ -32,6 +32,9 @@ class Moviemenu extends Component {
                     <Link to="/genres" className="activelink"><MenuItem onClick={()=>{this.props.getmoviesbygenresprop(53, "Thriller")}} >Thriller</MenuItem></Link>
                     <Link to="/genres" className="activelink"><MenuItem onClick={()=>{this.props.getmoviesbygenresprop(878, "Sci Fi")}} >Sci Fi</MenuItem></Link>
                     <Link to="/genres" className="activelink"><MenuItem onClick={()=>{this.props.getmoviesbygenresprop(37, "Western")}} >Western</MenuItem></Link>
+                    <Divider/>
+                    <Link className="activelink" to="/about"><MenuItem><b>About/Credits</b></MenuItem></Link>
+                    <Divider/>
                 </Menu>
                 
             </div>

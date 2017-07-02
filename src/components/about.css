@@ -1,0 +1,10 @@
+.aboutcontainer {
+    margin-top: 10vh;
+}
+
+.tmdblogo {
+    width: 150px;
+    height: 150px;
+    display: block;
+    margin: auto;
+}
