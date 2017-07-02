@@ -227,12 +227,8 @@ class App extends Component {
     });
     axios.get("https://api.themoviedb.org/3/movie/" + id + "/credits?api_key=" + this.state.apikey + "&language=en-US")
     .then(res => {
-      const castarray = []
-      castarray[0]=res.data.cast[0]
-      castarray[1]=res.data.cast[1]
-      castarray[2]=res.data.cast[2]
-      castarray[3]=res.data.cast[3]
-      castarray[4]=res.data.cast[4]
+      const rescastarray = res.data.cast
+      const castarray = rescastarray.slice(0,5)
       this.setState({ moviecast: castarray });
     });
     this.setState({popopen: true});  
@@ -339,7 +335,7 @@ class App extends Component {
                 </Popover>
 
                 <span className="filler"/>
-                <h3>{this.state.currentcat}</h3>
+                <p className="currentcat">{this.state.currentcat}</p>
                 <span className="filler"/>
 
                 <IconButton tooltip="Search" touch={true} tooltipPosition="bottom-center" onClick={this.opensearch}>

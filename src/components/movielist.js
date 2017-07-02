@@ -25,7 +25,6 @@ export default class movielist extends React.Component {
                 <img className="movieposterimage" src={'https://image.tmdb.org/t/p/w300/' + post.poster_path} alt={post.title} onClick={() => {this.getmoviedetailer(post.id)}} />     
               </div>
             )}
-            
         </div>
         <div className="btncon">
         {morebutton}
