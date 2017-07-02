@@ -11,12 +11,14 @@ class Moviemenu extends Component {
         return (
             <div>
                  <Menu >
-                    <Link className="activelink" to="/"><MenuItem>Home</MenuItem></Link>
+                    <Link className="activelink" to="/"><MenuItem><b>Home</b></MenuItem></Link>
                     <Divider/>
                     <Link className="activelink" to="/movies"><MenuItem onClick={()=>{this.props.proppop()}}>Popular</MenuItem></Link>
                     <Link className="activelink" to="/movies"><MenuItem onClick={()=>{this.props.proptop()}}>Top Rated</MenuItem></Link>
                     <Link className="activelink" to="/movies"><MenuItem onClick={()=>{this.props.propup()}}>Now Playing</MenuItem></Link>
                     <Link className="activelink" to="/movies"><MenuItem onClick={()=>{this.props.propnow()}}>Upcoming</MenuItem></Link>
+                    <Divider/>
+                    <MenuItem disabled={true} ><b>Genres</b></MenuItem>
                     <Divider/>
                     <Link to="/genres" className="activelink"><MenuItem onClick={()=>{this.props.getmoviesbygenresprop(28, "Action")}} >Action</MenuItem></Link>
                     <Link to="/genres" className="activelink"><MenuItem onClick={()=>{this.props.getmoviesbygenresprop(12, "Adventure")}} >Adventure</MenuItem></Link>

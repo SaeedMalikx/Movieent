@@ -257,10 +257,7 @@ class App extends Component {
   }
 
   getfavmoviedetail = (id) => {
-    axios.get("https://api.themoviedb.org/3/movie/" + id + "?api_key=" + this.state.apikey + "&language=en-US")
-    .then(res => {
-      this.setState({ moviedetail: res.data, genres: res.data.genres });
-    });
+    this.getmoviedetail(id)
     this.setState({popopen: true, favopen: false});  
   }
 
@@ -382,6 +379,8 @@ class App extends Component {
             <Dialog modal={false} open={this.state.favopen} onRequestClose={this.handleRequestClose} fullwidth={true} autoScrollBodyContent={true} contentClassName="dialogwidth">
                 <Favorites favlistprop={this.state.favlist} nomovieprop={this.state.nomovie} getfavmoviedetailprop={this.getfavmoviedetail}/>
             </Dialog>
+
+            <footer className="pagefooter"></footer>
 
             <Snacks snackopenprop={this.state.snackopen} nofavopenprop={this.state.nofavopen}/>
 

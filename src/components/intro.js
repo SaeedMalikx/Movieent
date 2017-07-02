@@ -50,13 +50,16 @@ export default class Intro extends React.Component {
                     <Link to="/genres" className="activelink"><span onClick={()=>{this.props.getmoviesbygenresprop(37, "Western")}} className="chip">Western</span></Link>
 
              </div>
+             <div className="labelpop">
+                <b>Popular Stars</b>
+             </div>
              <div className="popcastcontainer">
                 {this.props.popcastprop.map((post, index) =>
                 <div className="image" key={index}>
                     <Link to="/people" className="activelink">
                         
                             <img className="popcastimage" src={'https://image.tmdb.org/t/p/w300/' + post.profile_path} alt={post.name} onClick={() => {this.props.getcastmovieprop(post.id)}}  />
-                            <p className="popcastname">{post.name}</p>
+                            <p className="popcastname" onClick={() => {this.props.getcastmovieprop(post.id)}} ><b>{post.name}</b></p>
                         
                     </Link>
                 </div>

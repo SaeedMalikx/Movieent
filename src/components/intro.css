@@ -65,7 +65,7 @@
   position: relative;
   background-position: center center;
   background-size: cover;
-  background-image: url('http://media.comicbook.com/2017/03/wonder-woman-gal-gadot-reveals-new-poster-237587-1280x0.jpg');
+  background-image: url("../assets/popular-min.jpg");
 }
 .topratedimage {
   width: 300px;
@@ -74,7 +74,7 @@
   position: relative;
   background-position: center center;
   background-size: cover;
-  background-image: url('http://media.comicbook.com/2017/03/wonder-woman-gal-gadot-reveals-new-poster-237587-1280x0.jpg');
+  background-image: url("../assets/toprated-min.jpg");
 }
 .nowplayingimage {
   width: 300px;
@@ -83,7 +83,7 @@
   position: relative;
   background-position: center center;
   background-size: cover;
-  background-image: url('http://media.comicbook.com/2017/03/wonder-woman-gal-gadot-reveals-new-poster-237587-1280x0.jpg');
+  background-image: url("../assets/nowplaying-min.jpg");
 }
 .upcomingimage {
   width: 300px;
@@ -91,12 +91,13 @@
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
   position: relative;
   background-position: center center;
-  background-size: cover;
-  background-image: url('http://media.comicbook.com/2017/03/wonder-woman-gal-gadot-reveals-new-poster-237587-1280x0.jpg');
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-image: url("../assets/upcoming-min.jpg");
 }
 
 .popcastcontainer {
-    margin: 10vh;
+    margin: 2vh 10vh;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
@@ -105,15 +106,15 @@
 .popcastimage {
     width: 150px;
     height: 200px;
-    margin-left: 15px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
     border-radius: 25px;
 }
 .popcastname {
     font-size: 15px;
-    text-decoration: bold;
-    text-align: center;
-    color: white;
+    border-radius: 25px;
+    background-color: #f1f1f1; 
+    color: black;
+    padding: 5px 0;
 }
 .chipcontainer {
     display: flex;
@@ -129,4 +130,16 @@
     border-radius: 25px;
     background-color: #f1f1f1;
     color: black;
+}
+
+.labelpop {
+    width: 60%;
+    padding: 15px;
+    background-color: #4CAF50;
+    color: #fff;
+    margin: 5vh auto 5vh;
+    text-align: center;
+    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.4);
+    text-transform: uppercase;
+    text-shadow: 0 2px 2px rgba(0, 0, 0, 0.4);
 }
