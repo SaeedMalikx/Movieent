@@ -36,18 +36,18 @@ export default class Intro extends React.Component {
                 </div></Link>
              </div>
              <div className="chipcontainer">
-                    <Link to="/genres" className="activelink"><span onClick={()=>{this.props.getmoviesbygenresprop(28)}} className="chip">Action</span></Link>
-                    <Link to="/genres" className="activelink"><span onClick={()=>{this.props.getmoviesbygenresprop(12)}} className="chip">Adventure</span></Link>
-                    <Link to="/genres" className="activelink"><span onClick={()=>{this.props.getmoviesbygenresprop(16)}} className="chip">Animation</span></Link>
-                    <Link to="/genres" className="activelink"><span onClick={()=>{this.props.getmoviesbygenresprop(35)}} className="chip">Comedy</span></Link>
-                    <Link to="/genres" className="activelink"><span onClick={()=>{this.props.getmoviesbygenresprop(80)}} className="chip">Crime</span></Link>
-                    <Link to="/genres" className="activelink"><span onClick={()=>{this.props.getmoviesbygenresprop(99)}} className="chip">Documentary</span></Link>
-                    <Link to="/genres" className="activelink"><span onClick={()=>{this.props.getmoviesbygenresprop(14)}} className="chip">Fantasy</span></Link>
-                    <Link to="/genres" className="activelink"><span onClick={()=>{this.props.getmoviesbygenresprop(27)}} className="chip">Horror</span></Link>
-                    <Link to="/genres" className="activelink"><span onClick={()=>{this.props.getmoviesbygenresprop(10402)}} className="chip">Music</span></Link>
-                    <Link to="/genres" className="activelink"><span onClick={()=>{this.props.getmoviesbygenresprop(53)}} className="chip">Thriller</span></Link>
-                    <Link to="/genres" className="activelink"><span onClick={()=>{this.props.getmoviesbygenresprop(878)}} className="chip">Sci Fi</span></Link>
-                    <Link to="/genres" className="activelink"><span onClick={()=>{this.props.getmoviesbygenresprop(37)}} className="chip">Western</span></Link>
+                    <Link to="/genres" className="activelink"><span onClick={()=>{this.props.getmoviesbygenresprop(28, "Action")}} className="chip">Action</span></Link>
+                    <Link to="/genres" className="activelink"><span onClick={()=>{this.props.getmoviesbygenresprop(12, "Adventure")}} className="chip">Adventure</span></Link>
+                    <Link to="/genres" className="activelink"><span onClick={()=>{this.props.getmoviesbygenresprop(16, "Animation")}} className="chip">Animation</span></Link>
+                    <Link to="/genres" className="activelink"><span onClick={()=>{this.props.getmoviesbygenresprop(35, "Comedy")}} className="chip">Comedy</span></Link>
+                    <Link to="/genres" className="activelink"><span onClick={()=>{this.props.getmoviesbygenresprop(80, "Crime")}} className="chip">Crime</span></Link>
+                    <Link to="/genres" className="activelink"><span onClick={()=>{this.props.getmoviesbygenresprop(99, "Documentary")}} className="chip">Documentary</span></Link>
+                    <Link to="/genres" className="activelink"><span onClick={()=>{this.props.getmoviesbygenresprop(14, "Fantasy")}} className="chip">Fantasy</span></Link>
+                    <Link to="/genres" className="activelink"><span onClick={()=>{this.props.getmoviesbygenresprop(27, "Horror")}} className="chip">Horror</span></Link>
+                    <Link to="/genres" className="activelink"><span onClick={()=>{this.props.getmoviesbygenresprop(10402, "Music")}} className="chip">Music</span></Link>
+                    <Link to="/genres" className="activelink"><span onClick={()=>{this.props.getmoviesbygenresprop(53, "Thriller")}} className="chip">Thriller</span></Link>
+                    <Link to="/genres" className="activelink"><span onClick={()=>{this.props.getmoviesbygenresprop(878, "Sci Fi")}} className="chip">Sci Fi</span></Link>
+                    <Link to="/genres" className="activelink"><span onClick={()=>{this.props.getmoviesbygenresprop(37, "Western")}} className="chip">Western</span></Link>
 
              </div>
              <div className="popcastcontainer">

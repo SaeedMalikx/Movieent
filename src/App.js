@@ -12,6 +12,7 @@ import Favorites from './components/favorites'
 import Snacks from './components/snacks'
 import Intro from './components/intro'
 import People from './components/people'
+import Moviemenu from './components/menu'
 
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -170,8 +171,8 @@ class App extends Component {
     });
   }
 
-  movielsgenrefilter = (gid) => {
-    this.setState({movielsgenre: [], genreid: gid}, () => {this.getmoviesbygenres()})
+  movielsgenrefilter = (gid,  name) => {
+    this.setState({movielsgenre: [], genreid: gid, currentcat: name}, () => {this.getmoviesbygenres()})
   }
   movielsfiltertop = () => {
     this.setState({moviels: [], open: false, currentcat: "Top Rated", page: 1, movieurl: "movie/top_rated?"}, () => {this.getmovie()});
@@ -212,7 +213,7 @@ class App extends Component {
   }
 
   getsearch = () => {
-    axios.get(`https://api.themoviedb.org/3/search/movie?api_key=14d069109bafe2681aa95ad4b60d2a91&language=en-US&query="` + this.state.search)
+    axios.get("https://api.themoviedb.org/3/search/movie?api_key=" + this.state.apikey + "&language=en-US&query=" + this.state.search)
       .then(res => {
         this.setState({ moviels: res.data.results });
       });
@@ -320,11 +321,13 @@ class App extends Component {
                 <Menuicon onTouchTap={this.handleTouchTap} />
                 
                 <Drawer open={this.state.open} docked={false} onRequestChange={(open) => this.setState({open})}>
-                  <Link className="activelink" to="/"><MenuItem>Home</MenuItem></Link>
-                  <Link className="activelink" to="/movies"><MenuItem onClick={this.movielsfilterpop}>Popular</MenuItem></Link>
-                  <Link className="activelink" to="/movies"><MenuItem onClick={this.movielsfiltertop}>Top Rated</MenuItem></Link>
-                  <Link className="activelink" to="/movies"><MenuItem onClick={this.movielsfilterup}>Now Playing</MenuItem></Link>
-                  <Link className="activelink" to="/movies"><MenuItem onClick={this.movielsfilternow}>Upcoming</MenuItem></Link>
+                  <Moviemenu
+                      proppop={this.movielsfilterpop}
+                      proptop={this.movielsfiltertop}
+                      propup={this.movielsfilterup}
+                      propnow={this.movielsfilternow}
+                      getmoviesbygenresprop={this.movielsgenrefilter}
+                   />
                 </Drawer>
 
                 <Popover
