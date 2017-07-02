@@ -1,5 +1,6 @@
 import React from 'react';
 import './moviedetail.css'
+import { Link } from 'react-router-dom'
 
 import Star from 'material-ui/svg-icons/toggle/star';
 import Runtime from 'material-ui/svg-icons/action/schedule';
@@ -39,7 +40,16 @@ export default class Moviedetail extends React.Component {
                   <b>{this.props.moviedetailprop.revenue}</b>
                 </ListItem>
               </List>
-
+              <h4 className="centertext">CAST</h4>
+              {this.props.moviecastprop.map((post, index) =>
+              <div className="image" key={index}>
+                <List>
+                  <Link to="/people"><ListItem disabled={true} onClick={() => {this.props.getcastmovieprop(post.id)}}  >
+                    {post.name} as {post.character}
+                  </ListItem></Link> 
+                </List>  
+              </div>
+            )}
           </div>
         
       
@@ -47,4 +57,4 @@ export default class Moviedetail extends React.Component {
   }
 }
 
-            
+           

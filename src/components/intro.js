@@ -34,6 +34,7 @@ export default class Intro extends React.Component {
                     </div>
                 </div></Link>
              </div>
+             <input className="navbarsearch" onChange={this.searchvalue} placeholder="Search Movies" />
           </div>
         
       

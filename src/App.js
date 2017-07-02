@@ -10,6 +10,7 @@ import Firebaselogin from './components/firebaselogin'
 import Favorites from './components/favorites'
 import Snacks from './components/snacks'
 import Intro from './components/intro'
+import People from './components/people'
 
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -47,7 +48,10 @@ class App extends Component {
       nofavopen: false,
       favlist: [],
       isloggedin: null,
-      nomovie: ""
+      nomovie: "",
+      moviecast: [],
+      castmovie: [],
+      castmovieinfo: []
     };
   }
  
@@ -198,7 +202,29 @@ class App extends Component {
     .then(res => {
       this.setState({ moviedetail: res.data, genres: res.data.genres });
     });
+    axios.get("https://api.themoviedb.org/3/movie/" + id + "/credits?api_key=" + this.state.apikey + "&language=en-US")
+    .then(res => {
+      const castarray = []
+      castarray[0]=res.data.cast[0]
+      castarray[1]=res.data.cast[1]
+      castarray[2]=res.data.cast[2]
+      castarray[3]=res.data.cast[3]
+      castarray[4]=res.data.cast[4]
+      this.setState({ moviecast: castarray });
+    });
     this.setState({popopen: true});  
+  }
+
+  getcastmovie = (id) => {
+    axios.get("https://api.themoviedb.org/3/person/" + id + "/movie_credits?api_key=" + this.state.apikey + "&language=en-US")
+    .then(res => {
+      this.setState({ castmovie: res.data.cast});
+    });
+    axios.get("https://api.themoviedb.org/3/person/" + id + "?api_key=" + this.state.apikey + "&language=en-US")
+    .then(res => {
+      this.setState({ castmovieinfo: res.data});
+    });
+    this.setState({popopen: false});
   }
 
   getfavmoviedetail = (id) => {
@@ -310,7 +336,7 @@ class App extends Component {
                       </div>
                   )}
                 </div>
-               <Moviedetail moviedetailprop={this.state.moviedetail}/>
+               <Moviedetail moviedetailprop={this.state.moviedetail} moviecastprop={this.state.moviecast} getcastmovieprop={this.getcastmovie}/>
             </Dialog>
  
             <Dialog modal={false} open={this.state.loginopen} onRequestClose={this.handleRequestClose} contentClassName="dialogwidth">
@@ -323,7 +349,10 @@ class App extends Component {
 
             <Snacks snackopenprop={this.state.snackopen} nofavopenprop={this.state.nofavopen}/>
 
+            <Route exact path={"/people"} component={() => <People castmovieprop={this.state.castmovie} castmovieinfoprop={this.state.castmovieinfo} setidprop={this.getmoviedetail}/>}/>
+
             <Route exact path={"/movies"} component={() => <Movielist movielsprop={this.state.moviels} setid={this.getmoviedetail} setpage={this.setpagenumber} />}/>
+
             <Route exact path={"/"} component={() => <Intro 
                                                       proppop={this.movielsfilterpop}
                                                       proptop={this.movielsfiltertop}
