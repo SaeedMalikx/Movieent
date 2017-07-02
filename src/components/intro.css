@@ -94,3 +94,20 @@
   background-size: cover;
   background-image: url('http://media.comicbook.com/2017/03/wonder-woman-gal-gadot-reveals-new-poster-237587-1280x0.jpg');
 }
+
+.popcastcontainer {
+    margin: 10vh;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    text-align: center;
+}
+.popcastimage {
+    width: 150px;
+    height: 200px;
+    margin: 25px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+}
+.popcastname {
+    text-decoration: bold;
+}

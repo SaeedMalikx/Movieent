@@ -35,10 +35,7 @@ export default class Favorites extends React.Component {
             <div>
                 <p>{this.props.nomovieprop}</p>
                 {favz}
-
-            </div>
-        
-        
+            </div>        
     );
     }
 }

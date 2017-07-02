@@ -51,12 +51,13 @@ class App extends Component {
       nomovie: "",
       moviecast: [],
       castmovie: [],
-      castmovieinfo: []
+      castmovieinfo: [],
+      popcast: []
     };
   }
  
   componentDidMount = () => {
-    this.movielsfilterpop()
+    this.getpopularcast()
 
     firebase.auth().onAuthStateChanged(user => {
         if (user != null) {
@@ -227,6 +228,13 @@ class App extends Component {
     this.setState({popopen: false});
   }
 
+  getpopularcast = () => {
+    axios.get("https://api.themoviedb.org/3/person/popular?api_key=" + this.state.apikey + "&language=en-US&page=1")
+    .then(res => {
+      this.setState({ popcast: res.data.results});
+    });
+  }
+
   getfavmoviedetail = (id) => {
     axios.get("https://api.themoviedb.org/3/movie/" + id + "?api_key=" + this.state.apikey + "&language=en-US")
     .then(res => {
@@ -287,11 +295,11 @@ class App extends Component {
                 <Menuicon onTouchTap={this.handleTouchTap} />
                 
                 <Drawer open={this.state.open} docked={false} onRequestChange={(open) => this.setState({open})}>
-                  <Link to="/"><MenuItem>Home</MenuItem></Link>
-                  <Link to="/movies"><MenuItem onClick={this.movielsfilterpop}>Popular</MenuItem></Link>
-                  <Link to="/movies"><MenuItem onClick={this.movielsfiltertop}>Top Rated</MenuItem></Link>
-                  <Link to="/movies"><MenuItem onClick={this.movielsfilterup}>Now Playing</MenuItem></Link>
-                  <Link to="/movies"><MenuItem onClick={this.movielsfilternow}>Upcoming</MenuItem></Link>
+                  <Link className="activelink" to="/"><MenuItem>Home</MenuItem></Link>
+                  <Link className="activelink" to="/movies"><MenuItem onClick={this.movielsfilterpop}>Popular</MenuItem></Link>
+                  <Link className="activelink" to="/movies"><MenuItem onClick={this.movielsfiltertop}>Top Rated</MenuItem></Link>
+                  <Link className="activelink" to="/movies"><MenuItem onClick={this.movielsfilterup}>Now Playing</MenuItem></Link>
+                  <Link className="activelink" to="/movies"><MenuItem onClick={this.movielsfilternow}>Upcoming</MenuItem></Link>
                 </Drawer>
 
                 <Popover
@@ -358,7 +366,8 @@ class App extends Component {
                                                       proptop={this.movielsfiltertop}
                                                       propup={this.movielsfilterup}
                                                       propnow={this.movielsfilternow}
-                                              
+                                                      popcastprop={this.state.popcast}
+                                                      getcastmovieprop={this.getcastmovie}
                                               />}/>
       </div>
       </BrowserRouter>

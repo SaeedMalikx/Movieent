@@ -2,6 +2,7 @@ import React from 'react';
 import './intro.css'
 import { Link } from 'react-router-dom'
 
+import Paper from 'material-ui/Paper';
 
 export default class Intro extends React.Component {
 
@@ -34,7 +35,19 @@ export default class Intro extends React.Component {
                     </div>
                 </div></Link>
              </div>
-             <input className="navbarsearch" onChange={this.searchvalue} placeholder="Search Movies" />
+             <div className="popcastcontainer">
+                {this.props.popcastprop.map((post, index) =>
+                <div className="image" key={index}>
+                    <Link to="/people" className="activelink">
+                        <Paper zDepth={4}> 
+                            <img className="popcastimage" src={'https://image.tmdb.org/t/p/w300/' + post.profile_path} alt={post.name} onClick={() => {this.props.getcastmovieprop(post.id)}}  />
+                            <p className="popcastname">{post.name}</p>
+                        </Paper>
+                    </Link>
+                </div>
+                )}
+             </div>
+             
           </div>
         
       
