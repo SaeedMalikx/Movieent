@@ -5,7 +5,7 @@
   display: flex;
   align-items: center;
   position: fixed;
-  background-color: #E0E0E0;
+  background-color: #3f4c6b;
   top: 0;
   width: 100%;
   flex-wrap: wrap;
@@ -64,6 +64,9 @@
 
 .activelink {
   text-decoration: none;
+}
+h3 {
+  color: white;
 }
 
 

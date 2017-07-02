@@ -5,6 +5,7 @@ import './App.css';
 import { BrowserRouter, Route, Link } from 'react-router-dom'
 
 import Movielist from './components/movielist';
+import Genresmovielist from './components/genresmovielist'
 import Moviedetail from './components/moviedetail';
 import Firebaselogin from './components/firebaselogin'
 import Favorites from './components/favorites'
@@ -33,9 +34,10 @@ class App extends Component {
 
     this.state = {
       moviels: [],
+      movielsgenre: [],
       search: "",
       moviedetail: [],
-      currentcat: "",
+      currentcat: "Home",
       open: false,
       popopen: false,
       loginopen: false,
@@ -43,6 +45,8 @@ class App extends Component {
       searchopen: false,
       genres: [],
       page: 1,
+      genrepage: 1,
+      genreid: "",
       apikey: "14d069109bafe2681aa95ad4b60d2a91",
       snackopen: false,
       nofavopen: false,
@@ -166,6 +170,9 @@ class App extends Component {
     });
   }
 
+  movielsgenrefilter = (gid) => {
+    this.setState({movielsgenre: [], genreid: gid}, () => {this.getmoviesbygenres()})
+  }
   movielsfiltertop = () => {
     this.setState({moviels: [], open: false, currentcat: "Top Rated", page: 1, movieurl: "movie/top_rated?"}, () => {this.getmovie()});
   }
@@ -189,6 +196,19 @@ class App extends Component {
         this.setState({ moviels: this.state.moviels.concat(res.data.results) });
       })  
       }   
+  }
+
+  getmoviesbygenres = () => {
+    if (this.state.genrepage === 1){
+     axios.get('https://api.themoviedb.org/3/genre/' + this.state.genreid + '/movies?api_key=' + this.state.apikey + '&language=en-US&page=' + this.state.genrepage)
+      .then(res => {
+        this.setState({ movielsgenre: res.data.results });
+      })} else {
+      axios.get('https://api.themoviedb.org/3/genre/' + this.state.genreid+ '/movies?api_key=' + this.state.apikey + '&language=en-US&page=' + this.state.genrepage)
+      .then(res => {
+        this.setState({ movielsgenre: this.state.movielsgenre.concat(res.data.results) });
+      })  
+      }
   }
 
   getsearch = () => {
@@ -223,7 +243,7 @@ class App extends Component {
     });
     axios.get("https://api.themoviedb.org/3/person/" + id + "?api_key=" + this.state.apikey + "&language=en-US")
     .then(res => {
-      this.setState({ castmovieinfo: res.data});
+      this.setState({ currentcat: res.data.name});
     });
     this.setState({popopen: false});
   }
@@ -253,6 +273,11 @@ class App extends Component {
   setpagenumber = () => {
     this.setState({page: this.state.page + 1}, () =>{
     this.getmovie()})
+  }
+
+  setgenrepagenumber = () => {
+    this.setState({genrepage: this.state.genrepage + 1}, () =>{
+    this.getmoviesbygenres()})
   }
 
   render() {
@@ -357,9 +382,11 @@ class App extends Component {
 
             <Snacks snackopenprop={this.state.snackopen} nofavopenprop={this.state.nofavopen}/>
 
-            <Route exact path={"/people"} component={() => <People castmovieprop={this.state.castmovie} castmovieinfoprop={this.state.castmovieinfo} setidprop={this.getmoviedetail}/>}/>
+            <Route exact path={"/people"} component={() => <People castmovieprop={this.state.castmovie} setidprop={this.getmoviedetail}/>}/>
 
             <Route exact path={"/movies"} component={() => <Movielist movielsprop={this.state.moviels} setid={this.getmoviedetail} setpage={this.setpagenumber} />}/>
+
+            <Route exact path={"/genres"} component={() => <Genresmovielist movielsgenreprop={this.state.movielsgenre} setid={this.getmoviedetail} setpage={this.setgenrepagenumber} />}/>
 
             <Route exact path={"/"} component={() => <Intro 
                                                       proppop={this.movielsfilterpop}
@@ -368,6 +395,7 @@ class App extends Component {
                                                       propnow={this.movielsfilternow}
                                                       popcastprop={this.state.popcast}
                                                       getcastmovieprop={this.getcastmovie}
+                                                      getmoviesbygenresprop={this.movielsgenrefilter}
                                               />}/>
       </div>
       </BrowserRouter>

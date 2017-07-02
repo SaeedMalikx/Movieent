@@ -105,9 +105,28 @@
 .popcastimage {
     width: 150px;
     height: 200px;
-    margin: 25px;
+    margin-left: 15px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+    border-radius: 25px;
 }
 .popcastname {
+    font-size: 15px;
     text-decoration: bold;
+    text-align: center;
+    color: white;
+}
+.chipcontainer {
+    display: flex;
+    margin-top: 5vh;
+}
+.chip {
+    display: inline-block;
+    padding: 0 25px;
+    height: 50px;
+    margin: 5px 5px;
+    font-size: 16px;
+    line-height: 50px;
+    border-radius: 25px;
+    background-color: #f1f1f1;
+    color: black;
 }
