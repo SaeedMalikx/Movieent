@@ -39,7 +39,7 @@ class App extends Component {
       movielsgenre: [],
       search: "",
       moviedetail: [],
-      currentcat: "Home",
+      currentcat: "Movieent",
       open: false,
       popopen: false,
       loginopen: false,
