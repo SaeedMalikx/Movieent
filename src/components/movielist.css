@@ -8,7 +8,7 @@
 .movieposterimage {
     width: 300px;
     height: 450px;
-    margin: 5px 5px;
+    margin: 5px 5px 0px 5px;
     background-color: gray;
 }
 
@@ -28,7 +28,18 @@
     font-size: 16px;
     margin-bottom: 5vh;
 }
-
+.movielstitle { 
+   color: black;
+   width: 300px; 
+   height: 30px;
+   text-align: center;
+   margin: 0px 5px 5px 5px;
+   font-size: 1.5em;
+   word-wrap: break-word;
+   overflow: hidden;
+   border-radius: 25px;
+    background-color: #f1f1f1;
+}
 
 @media only screen and (max-width: 500px) {
     .movieposterimage {
@@ -36,4 +47,10 @@
     height: 225px;
     margin: 5px 5px;
     }
+    .movielstitle { 
+        width: 150px;
+        font-size: 1em;
+        height: 15px;
+    }
+
 }

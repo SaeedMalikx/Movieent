@@ -11,7 +11,7 @@ class Moviemenu extends Component {
         return (
             <div>
                  <Menu >
-                    <Link className="activelink" to="/"><MenuItem><b>Home</b></MenuItem></Link>
+                    <Link className="activelink" to="/"><MenuItem onClick={()=>{this.props.sethomecatprop()}}><b>Home</b></MenuItem></Link>
                     <Divider/>
                     <Link className="activelink" to="/movies"><MenuItem onClick={()=>{this.props.proppop()}}>Popular</MenuItem></Link>
                     <Link className="activelink" to="/movies"><MenuItem onClick={()=>{this.props.proptop()}}>Top Rated</MenuItem></Link>

@@ -11,6 +11,13 @@
   flex-wrap: wrap;
   z-index: 5;
 }
+.navbarcontent {
+  display: flex;
+  width: 95%;
+  margin: auto;
+  align-items: center;
+}
+
 
 .navbarsearch{
   flex-grow: 1;
@@ -74,6 +81,9 @@
     }
     .currentcat {
       font-size: 1em;
+    }
+    .navbarcontent {
+      width: 100%;
     }
 }
 @media only screen and (max-width: 320px) {

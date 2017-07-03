@@ -274,6 +274,9 @@ class App extends Component {
     this.setState({genrepage: this.state.genrepage + 1}, () =>{
     this.getmoviesbygenres()})
   }
+  sethomecat = () => {
+    this.setState({currentcat: "Home"})
+  }
 
   render() {
     const actions = [
@@ -311,7 +314,7 @@ class App extends Component {
         <BrowserRouter>
         <div className="App">
           <div className="navbar">
-              
+              <div className="navbarcontent">
                 <Menuicon onTouchTap={this.handleTouchTap} />
                 
                 <Drawer open={this.state.open} docked={false} onRequestChange={(open) => this.setState({open})}>
@@ -321,6 +324,7 @@ class App extends Component {
                       propup={this.movielsfilterup}
                       propnow={this.movielsfilternow}
                       getmoviesbygenresprop={this.movielsgenrefilter}
+                      sethomecatprop={this.sethomecat}
                    />
                 </Drawer>
 
@@ -346,7 +350,7 @@ class App extends Component {
                 </IconButton>
 
                 {button}
-
+              </div>
           </div>
 
             <Dialog title={this.state.moviedetail.title} 

@@ -19,7 +19,8 @@ export default class People extends React.Component {
                     {post.poster_path ? 
                       <img className="movieposterimage" src={'https://image.tmdb.org/t/p/w300/' + post.poster_path} alt={post.title} onClick={() => {this.props.setidprop(post.id)}} />
                      : <img className="movieposterimage" src ={Noposter} alt={post.title} onClick={() => {this.props.setidprop(post.id)}} />
-                    }      
+                    }   
+                    <h2 className="movielstitle">{post.title}</h2>   
                 </div>
                 )}
             </div>
