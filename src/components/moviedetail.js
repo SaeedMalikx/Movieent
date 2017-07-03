@@ -44,10 +44,20 @@ export default class Moviedetail extends React.Component {
               {this.props.moviecastprop.map((post, index) =>
               <div className="image" key={index}>
                 <List>
-                  <Link className="activelink" to="/people"><ListItem disabled={false} onClick={() => {this.props.getcastmovieprop(post.id)}} 
+                  <Link className="activelink" to="/people">
+                  { post.profile_path ?
+                      <ListItem disabled={false} onClick={() => {this.props.getcastmovieprop(post.id)}} 
                            leftAvatar={<Avatar src={'https://image.tmdb.org/t/p/w300/' + post.profile_path} />}>
-                    {post.name} as <b>{post.character}</b>
-                  </ListItem></Link> 
+                        {post.name} as <b>{post.character}</b>
+                      </ListItem>
+                      :
+                      <ListItem disabled={false} onClick={() => {this.props.getcastmovieprop(post.id)}} 
+                           leftAvatar={<Avatar  />}>
+                        {post.name} as <b>{post.character}</b>
+                      </ListItem>
+
+                  }
+                  </Link> 
                 </List>  
               </div>
             )}
