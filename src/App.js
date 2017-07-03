@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import firebase from 'firebase'
 import './App.css';
-import { BrowserRouter, Route } from 'react-router-dom'
+import { BrowserRouter, Route, Link } from 'react-router-dom'
 
 import Movielist from './components/movielist';
 import Genresmovielist from './components/genresmovielist'
@@ -22,11 +22,10 @@ import IconMenu from 'material-ui/IconMenu';
 import IconButton from 'material-ui/IconButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import Dialog from 'material-ui/Dialog';
-import ActionGrade from 'material-ui/svg-icons/action/grade';
 import Search from 'material-ui/svg-icons/action/search';
 import Drawer from 'material-ui/Drawer';
-import Menuicon from 'material-ui/svg-icons/navigation/menu';
 import Star from 'material-ui/svg-icons/toggle/star';
+import {grey50} from 'material-ui/styles/colors';
 
 
 
@@ -214,10 +213,11 @@ class App extends Component {
   }
 
   getsearch = () => {
+    if (this.state.search.length > 1){
     axios.get("https://api.themoviedb.org/3/search/movie?api_key=" + this.state.apikey + "&language=en-US&query=" + this.state.search)
       .then(res => {
         this.setState({ moviels: res.data.results });
-      });
+      })}
   }
 
   getmoviedetail = (id) => {
@@ -274,9 +274,6 @@ class App extends Component {
     this.setState({genrepage: this.state.genrepage + 1}, () =>{
     this.getmoviesbygenres()})
   }
-  sethomecat = () => {
-    this.setState({currentcat: "Home"})
-  }
 
   render() {
     const actions = [
@@ -298,7 +295,7 @@ class App extends Component {
       if (this.state.isloggedin) {
         button =   <IconMenu
                     iconButtonElement={
-                      <IconButton><MoreVertIcon /></IconButton>
+                      <IconButton><MoreVertIcon color={grey50} /></IconButton>
                     }
                     targetOrigin={{horizontal: 'right', vertical: 'top'}}
                     anchorOrigin={{horizontal: 'right', vertical: 'top'}}
@@ -315,8 +312,7 @@ class App extends Component {
         <div className="App">
           <div className="navbar">
               <div className="navbarcontent">
-                <Menuicon onTouchTap={this.handleTouchTap} />
-                
+                <span onTouchTap={this.handleTouchTap} className="title">MOVIEENT </span>
                 <Drawer open={this.state.open} docked={false} onRequestChange={(open) => this.setState({open})}>
                   <Moviemenu
                       proppop={this.movielsfilterpop}
@@ -324,10 +320,9 @@ class App extends Component {
                       propup={this.movielsfilterup}
                       propnow={this.movielsfilternow}
                       getmoviesbygenresprop={this.movielsgenrefilter}
-                      sethomecatprop={this.sethomecat}
                    />
                 </Drawer>
-
+                <span className="filler"/>
                 <Popover
                   open={this.state.searchopen}
                   anchorEl={this.state.anchorEl}
@@ -335,20 +330,12 @@ class App extends Component {
                   targetOrigin={{horizontal: 'right', vertical: 'top'}}
                   onRequestClose={this.handleRequestClose}
                 >
-                  <input className="navbarsearch" onChange={this.searchvalue} placeholder="Search Movies" />
+                  <Link to="/movies"><input className="navbarsearch" onChange={this.searchvalue} placeholder="Search Movies" /></Link>
                 </Popover>
 
-                <span className="filler"/>
-                <p className="currentcat">{this.state.currentcat}</p>
-                <span className="filler"/>
-
                 <IconButton tooltip="Search" touch={true} tooltipPosition="bottom-center" onClick={this.opensearch}>
-                  <Search />
-                </IconButton>                
-                <IconButton tooltip="Favorites" touch={true} tooltipPosition="bottom-center" onClick={this.openfav}>
-                  <ActionGrade />
-                </IconButton>
-
+                  <Search color={grey50}/>
+                </IconButton>  
                 {button}
               </div>
           </div>
@@ -364,7 +351,7 @@ class App extends Component {
                 <div className="chipcontainer">
                   {this.state.genres.map(chip => 
                       <div key={chip.id}>
-                          <div className="chip">
+                          <div className="detailchip">
                               <span >{chip.name}</span>
                           </div>
                       </div>
@@ -399,7 +386,6 @@ class App extends Component {
                                                       popcastprop={this.state.popcast}
                                                       getcastmovieprop={this.getcastmovie}
                                                       getmoviesbygenresprop={this.movielsgenrefilter}
-                                                      setmaincat={this.setcat}
                                               />}/>
             
       </div>
