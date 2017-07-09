@@ -14,12 +14,6 @@ var injectTapEventPlugin = require("react-tap-event-plugin");
 injectTapEventPlugin();
 
 const config = {
-    apiKey: "AIzaSyAv8oajkg64GOIhClFQpynYSn1tWPQ8bbY",
-    authDomain: "moviedb-f9ed5.firebaseapp.com",
-    databaseURL: "https://moviedb-f9ed5.firebaseio.com",
-    projectId: "moviedb-f9ed5",
-    storageBucket: "",
-    messagingSenderId: "179911698739"
   };
 firebase.initializeApp(config);
 

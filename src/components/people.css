@@ -2,3 +2,30 @@
     margin: 10vh;
     text-align: center;
 }
+
+.castnamecontainer {
+    display: flex;
+    justify-content: center;
+    margin-top: 10vh;
+    text-align: center;
+}
+
+.castlstitle { 
+   color: black;
+   width: 300px; 
+   height: 30px;
+   text-align: center;
+   margin: 0px 5px 5px 5px;
+   font-size: 1.5em;
+   word-wrap: break-word;
+   overflow: hidden;
+   border-radius: 25px;
+    background-color: #f1f1f1;
+}
+
+.castmovielistcontainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 5vh;
+}

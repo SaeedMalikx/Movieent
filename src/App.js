@@ -370,11 +370,11 @@ class App extends Component {
 
             <Snacks snackopenprop={this.state.snackopen} nofavopenprop={this.state.nofavopen}/>
 
-            <Route exact path={"/people"} component={() => <People castmovieprop={this.state.castmovie} setidprop={this.getmoviedetail}/>}/>
+            <Route exact path={"/people"} component={() => <People castname={this.state.currentcat} castmovieprop={this.state.castmovie} setidprop={this.getmoviedetail}/>}/>
 
-            <Route exact path={"/movies"} component={() => <Movielist movielsprop={this.state.moviels} setid={this.getmoviedetail} setpage={this.setpagenumber} />}/>
+            <Route exact path={"/movies"} component={() => <Movielist movielsname={this.state.currentcat} movielsprop={this.state.moviels} setid={this.getmoviedetail} setpage={this.setpagenumber} />}/>
 
-            <Route exact path={"/genres"} component={() => <Genresmovielist movielsgenreprop={this.state.movielsgenre} setid={this.getmoviedetail} setpage={this.setgenrepagenumber} />}/>
+            <Route exact path={"/genres"} component={() => <Genresmovielist movielsname={this.state.currentcat} movielsgenreprop={this.state.movielsgenre} setid={this.getmoviedetail} setpage={this.setgenrepagenumber} />}/>
 
             <Route exact path={"/about"} component={() => <About/>}/>
 

@@ -13,7 +13,10 @@ export default class People extends React.Component {
       
     return (
           <div >
-              <div className="movielistcontainer">
+              <div className="castnamecontainer">
+                  <h2 className="castlstitle" ><b>{this.props.castname}</b></h2>
+              </div>
+              <div className="castmovielistcontainer">
                 {this.props.castmovieprop.map((post, index) =>
                 <div className="image" key={index}>
                     {post.poster_path ? 

@@ -19,6 +19,9 @@ export default class movielist extends React.Component {
     }
     return (
       <div>
+        <div className="castnamecontainer">
+          <h2 className="castlstitle" ><b>{this.props.movielsname}</b></h2>
+        </div>
         <div className="movielistcontainer">
             {this.props.movielsprop.map((post, index) =>
               <div className="image" key={index}>
