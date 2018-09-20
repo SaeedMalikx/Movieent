@@ -2,6 +2,7 @@ WebApp to browse the The Movie database(TMDB)
 
 # [**LIVE DEMO**](https://moviedb-f9ed5.firebaseapp.com/)
 
+![Homepage](/src/assets/movie.PNG)
 
 * This app was created with Create-React-App
 * Uses Only React
